@@ -13,13 +13,13 @@ export default class Category extends React.Component<CategoryProps> {
     return (
       <div className='category'>
         <h2 className='category__title'>{category}</h2>
-        <div className='category__products__container'>
-          <div className='category__products'>
-            {products.map(product => (
-              <CategoryProduct product={product} key={product.name} />
-            ))}
-          </div>
-        </div>
+        <ul className='category__products'>
+          {products.map(product => (
+            <li key={product.id} className='category__products__item'>
+              <CategoryProduct product={product} />
+            </li>
+          ))}
+        </ul>
       </div>
     );
   }

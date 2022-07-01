@@ -10,13 +10,13 @@ export default class CategoryProduct extends React.Component<CategoryProductProp
   render() {
     const { product } = this.props;
     return (
-      <Link className='product' to='/product'>
-        <div className='product__image__container'>
-          {!product.inStock && <span className='product__stock'>Out of Stock</span>}
-          <img className={`product__image ${!product.inStock ? 'product__image-stock' : ''}`} src={product.gallery[0]} alt={product.name} />
+      <Link className='categoryProduct' to={`/product/${product.id}`}>
+        <div className='categoryProduct__image__container'>
+          {!product.inStock && <span className='categoryProduct__stock'>Out of Stock</span>}
+          <img className={`categoryProduct__image ${!product.inStock ? 'categoryProduct__image-stock' : ''}`} src={product.gallery[0]} alt={product.name} />
         </div>
-        <span className='product__name'>{product.name}t</span>
-        <span className='product__price'>
+        <span className='categoryProduct__name'>{product.name}t</span>
+        <span className='categoryProduct__price'>
           {product.prices[0].currency.symbol}
           {product.prices[0].amount}
         </span>

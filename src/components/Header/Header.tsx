@@ -26,10 +26,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     this.initCategories();
   }
 
-  componentDidUpdate() {
-    console.log('update');
-  }
-
   async initCategories() {
     const categories = await categoryService.getCategories();
     this.setState({ categories });

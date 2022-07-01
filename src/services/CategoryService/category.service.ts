@@ -22,8 +22,6 @@ class CategoryService {
       variables: { input: { title } }
     });
 
-    console.log(res.data.category.products);
-
     return res.data.category.products;
   }
 }

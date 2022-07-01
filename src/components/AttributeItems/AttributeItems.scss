@@ -1,0 +1,40 @@
+.attributes {
+    display: flex;
+
+    &__item {
+        margin-right: 10px;
+    }
+}
+
+.swatch {
+    width: 32px;
+    height: 32px;
+
+    &-selected {
+        border: 1px solid var(--main-green-color);
+    }
+}
+
+.text {
+    width: 63px;
+    height: 45px;
+    border: 1px solid #1D1F22;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.05em;
+    color: #1D1F22;
+
+    &-selected {
+        background: #1D1F22;
+        border: 1px solid #1D1F22;
+    }
+}

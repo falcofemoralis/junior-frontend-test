@@ -13,7 +13,7 @@ class App extends React.Component {
             <Route exact path='/'>
               <CategoryPage />
             </Route>
-            <Route exact path='/product'>
+            <Route exact path='/product/:id'>
               <ProductPage />
             </Route>
             <Route exact path='/:category'>
