@@ -1,4 +1,5 @@
 import React from 'react';
+import { withLayout } from '../components/hoc/BasicLayout';
 
 class ProductPage extends React.Component {
   render() {
@@ -10,4 +11,4 @@ class ProductPage extends React.Component {
   }
 }
 
-export default ProductPage;
+export default withLayout(ProductPage);

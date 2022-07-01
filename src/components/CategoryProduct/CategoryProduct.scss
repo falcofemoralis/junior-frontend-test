@@ -11,11 +11,34 @@
     box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
   }
 
+
   &__image {
-    object-fit: contain;  
-    height: 0;
-    display: flex;
-    flex-grow: 1;
+    width: 100%;
+    object-fit: contain;
+
+    &__container {
+      position: relative;
+      height: 0;
+      display: flex;
+      justify-content: center;
+      flex-grow: 1;
+    }
+
+    &-stock {
+      background: #FFFFFF;
+      opacity: 0.5;
+    }
+  }
+
+  &__stock {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    color: #8D8F9A;
   }
 
   &__name {

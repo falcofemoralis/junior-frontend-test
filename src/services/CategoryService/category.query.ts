@@ -12,8 +12,16 @@ export const GET_CATEGORY = gql`
   query ($input: CategoryInput) {
     category(input: $input) {
       products {
+        id
         name
         gallery
+        inStock
+        prices {
+          amount
+          currency {
+            symbol
+          }
+        }
       }
     }
   }

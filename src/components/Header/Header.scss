@@ -1,18 +1,15 @@
-header {
-  height: 80px;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 0 var(--container-margin) 0 var(--container-margin);
-  position: relative;
-}
-
 nav {
   display: flex;
 }
 
 .header {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+
   &__link {
     padding: 28px 20px 32px 20px;
     font-style: normal;
@@ -22,7 +19,7 @@ nav {
     color: #1d1f22;
   }
 
-  &__link:hover {
+  &__link:hover, &__link-selected {
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
@@ -32,7 +29,7 @@ nav {
     position: relative;
   }
 
-  &__link:hover::after {
+  &__link:hover::after,  &__link-selected::after {
     content: "";
     position: absolute;
     height: 2px;
