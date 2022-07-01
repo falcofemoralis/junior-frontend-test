@@ -12,7 +12,6 @@ nav {
 
   &__link {
     padding: 28px 20px 32px 20px;
-    font-style: normal;
     font-weight: 400;
     font-size: 16px;
     text-transform: uppercase;
@@ -20,7 +19,6 @@ nav {
   }
 
   &__link:hover, &__link-selected {
-    font-style: normal;
     font-weight: 600;
     font-size: 16px;
     text-transform: uppercase;

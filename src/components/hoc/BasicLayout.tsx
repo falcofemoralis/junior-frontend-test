@@ -7,7 +7,9 @@ export const withLayout = (Component: React.ComponentType) => {
       return (
         <div>
           <Header />
-          <Component />
+          <main>
+            <Component />
+          </main>
         </div>
       );
     }

@@ -3,12 +3,21 @@
 
     &__item {
         margin-right: 10px;
+        cursor: pointer;
     }
 }
 
 .swatch {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &__item {
+        width: 32px;
+        height: 32px;
+    }
 
     &-selected {
         border: 1px solid var(--main-green-color);
@@ -23,7 +32,6 @@
     align-items: center;
     justify-content: center;
     font-family: 'Source Sans Pro';
-    font-style: normal;
     font-weight: 400;
     font-size: 16px;
     line-height: 18px;
@@ -36,5 +44,6 @@
     &-selected {
         background: #1D1F22;
         border: 1px solid #1D1F22;
+        color: #fff
     }
 }

@@ -1,6 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&family=Source+Sans+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway&family=Roboto&family=Roboto+Condensed&family=Source+Sans+Pro&display=swap');
+
 *,
 *::after,
 *::before {
@@ -9,7 +8,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Raleway", "Roboto";
+  font-family: "Raleway", "Roboto", sans-serif;
   text-decoration: none;
 }
 
@@ -21,4 +20,14 @@ body {
 :root {
   --main-green-color: #5ece7b;
   --container-margin: 100px;
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #eee;
+  border-radius: 4px;
 }

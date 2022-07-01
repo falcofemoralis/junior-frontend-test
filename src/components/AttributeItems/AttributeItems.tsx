@@ -3,37 +3,59 @@ import { Attribute, AttributeItem, AttributeType } from '../../types/product.typ
 import './AttributeItems.scss';
 
 interface AttributeItemsProps {
-  attr: Attribute;
+  attribute: Attribute;
+  onAttributeItemSelect: (attributeId: string, itemId: string) => void;
 }
-export default class AttributeItems extends React.Component<AttributeItemsProps> {
-  renderAttributeItems(items: AttributeItem[]) {
-    return (
-      <div>
-        {items.map(item => (
-          <div key={item.id}>{item.value}</div>
-        ))}
-      </div>
-    );
+
+interface AttributeItemsState {
+  selectedAttribute: AttributeItem | null;
+}
+export default class AttributeItems extends React.Component<AttributeItemsProps, AttributeItemsState> {
+  constructor(props: AttributeItemsProps) {
+    super(props);
+
+    this.state = {
+      selectedAttribute: null
+    };
+  }
+
+  onSelect(item: AttributeItem) {
+    if (item.id !== this.state.selectedAttribute?.id) {
+      this.props.onAttributeItemSelect(this.props.attribute.id, item.id);
+      this.setState({ selectedAttribute: item });
+    }
   }
 
   render() {
-    const { attr } = this.props;
+    const { attribute } = this.props;
+    const { selectedAttribute } = this.state;
 
-    if (attr.type === AttributeType.text) {
+    // TODO duplicate code
+    if (attribute.type === AttributeType.text) {
       return (
         <div className='attributes'>
-          {attr.items.map(item => (
-            <div className='attributes__item text' key={item.id}>
+          {attribute.items.map(item => (
+            <div
+              className={`attributes__item text ${item.id === selectedAttribute?.id ? 'text-selected' : ''}`}
+              key={item.id}
+              onClick={() => this.onSelect(item)}
+            >
               {item.value}
             </div>
           ))}
         </div>
       );
-    } else if (attr.type === AttributeType.swatch) {
+    } else if (attribute.type === AttributeType.swatch) {
       return (
         <div className='attributes'>
-          {attr.items.map(item => (
-            <div className='attributes__item swatch' key={item.id} style={{ background: item.value }}></div>
+          {attribute.items.map(item => (
+            <div
+              className={`attributes__item swatch ${item.id === selectedAttribute?.id ? 'swatch-selected' : ''}`}
+              key={item.id}
+              onClick={() => this.onSelect(item)}
+            >
+              <div className='swatch__item' style={{ background: item.value }}></div>
+            </div>
           ))}
         </div>
       );

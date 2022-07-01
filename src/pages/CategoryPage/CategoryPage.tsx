@@ -1,9 +1,9 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import Category from '../components/Category/Category';
-import { withLayout } from '../components/hoc/BasicLayout';
-import categoryService from '../services/CategoryService/category.service';
-import { Product } from '../types/product.type';
+import Category from '../../components/Category/Category';
+import { withLayout } from '../../components/hoc/BasicLayout';
+import categoryService from '../../services/CategoryService/category.service';
+import { Product } from '../../types/product.type';
 
 interface RouteParams {
   category: string;

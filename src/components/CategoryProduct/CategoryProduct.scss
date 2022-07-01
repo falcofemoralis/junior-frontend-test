@@ -31,14 +31,12 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-style: normal;
     font-weight: 400;
     font-size: 24px;
     color: #8D8F9A;
   }
 
   &__name {
-    font-style: normal;
     font-weight: 300;
     font-size: 18px;
     line-height: 160%;
@@ -48,7 +46,6 @@
   }
 
   &__price {
-    font-style: normal;
     font-weight: 500;
     font-size: 18px;
     line-height: 160%;
