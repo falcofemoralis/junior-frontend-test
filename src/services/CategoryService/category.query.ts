@@ -13,6 +13,7 @@ export const GET_CATEGORY = gql`
     category(input: $input) {
       products {
         id
+        brand
         name
         gallery
         inStock

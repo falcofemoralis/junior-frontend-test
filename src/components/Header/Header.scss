@@ -1,14 +1,21 @@
-nav {
-  display: flex;
-}
-
 .header {
-  height: 80px;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-  position: relative;
+  height: var(--header-height);
+  position: fixed;
+  width: calc(var(--container-size) - var(--container-margin) * 2);
+  background-color: #fff;
+  z-index: 5;
+
+  &__inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__navigation {
+    display: flex;
+  }
 
   &__link {
     padding: 28px 20px 32px 20px;
@@ -18,7 +25,8 @@ nav {
     color: #1d1f22;
   }
 
-  &__link:hover, &__link-selected {
+  &__link:hover,
+  &__link-selected {
     font-weight: 600;
     font-size: 16px;
     text-transform: uppercase;
@@ -27,7 +35,8 @@ nav {
     position: relative;
   }
 
-  &__link:hover::after,  &__link-selected::after {
+  &__link:hover::after,
+  &__link-selected::after {
     content: "";
     position: absolute;
     height: 2px;
@@ -41,4 +50,49 @@ nav {
     position: absolute;
     left: 50%;
   }
+
+  &__buttons {
+    display: flex;
+  }
+
+  &__mask {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: calc(100vh - var(--header-height));
+    width: 100vw;
+    background: rgba(57, 55, 72, 0.22);
+  }
+}
+
+.cart {
+  position: relative;
+
+  &__button {
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background: none;
+  }
+
+  &__count {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background: #1D1F22;
+    top: -10px;
+    right: -12px;
+    text-align: center;
+    text-transform: uppercase;
+
+    &-text {
+      font-family: 'Roboto';
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+    }
+  }
+
+  &__logo {}
 }

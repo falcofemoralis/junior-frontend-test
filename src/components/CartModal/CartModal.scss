@@ -1,0 +1,18 @@
+.cartModal {
+    position: absolute;
+    max-height: 50vh;
+    width: 325px;
+    z-index: 15;
+    right: 0;
+    top: var(--header-height);
+    background: #fff;
+    overflow: hidden;
+
+    &__inner {
+        padding: 16px;
+    }
+
+    &__title {
+  
+    }
+}

@@ -15,7 +15,9 @@ export default class CategoryProduct extends React.Component<CategoryProductProp
           {!product.inStock && <span className='categoryProduct__stock'>Out of Stock</span>}
           <img className={`categoryProduct__image ${!product.inStock ? 'categoryProduct__image-stock' : ''}`} src={product.gallery[0]} alt={product.name} />
         </div>
-        <span className='categoryProduct__name'>{product.name}t</span>
+        <span className='categoryProduct__name'>
+          {product.brand} {product.name}
+        </span>
         <span className='categoryProduct__price'>
           {product.prices[0].currency.symbol}
           {product.prices[0].amount}

@@ -4,7 +4,10 @@ import './AttributeItems.scss';
 
 interface AttributeItemsProps {
   attribute: Attribute;
-  onAttributeItemSelect: (attributeId: string, itemId: string) => void;
+  onAttributeItemSelect?: (attributeId: string, itemId: string) => void;
+  selectedItem?: string;
+  small?: boolean;
+  selectable?: boolean;
 }
 
 interface AttributeItemsState {
@@ -17,50 +20,42 @@ export default class AttributeItems extends React.Component<AttributeItemsProps,
     this.state = {
       selectedAttribute: null
     };
+
+    this.isItemSelected = this.isItemSelected.bind(this);
+  }
+
+  isSelectable() {
+    return Boolean(this.props.onAttributeItemSelect);
   }
 
   onSelect(item: AttributeItem) {
-    if (item.id !== this.state.selectedAttribute?.id) {
+    if (this.props.onAttributeItemSelect && item.id !== this.state.selectedAttribute?.id) {
       this.props.onAttributeItemSelect(this.props.attribute.id, item.id);
       this.setState({ selectedAttribute: item });
     }
   }
 
-  render() {
-    const { attribute } = this.props;
-    const { selectedAttribute } = this.state;
+  isItemSelected(item: AttributeItem) {
+    return item.id === this.state.selectedAttribute?.id || item.id === this.props.selectedItem;
+  }
 
-    // TODO duplicate code
-    if (attribute.type === AttributeType.text) {
-      return (
-        <div className='attributes'>
-          {attribute.items.map(item => (
-            <div
-              className={`attributes__item text ${item.id === selectedAttribute?.id ? 'text-selected' : ''}`}
-              key={item.id}
-              onClick={() => this.onSelect(item)}
-            >
-              {item.value}
-            </div>
-          ))}
-        </div>
-      );
-    } else if (attribute.type === AttributeType.swatch) {
-      return (
-        <div className='attributes'>
-          {attribute.items.map(item => (
-            <div
-              className={`attributes__item swatch ${item.id === selectedAttribute?.id ? 'swatch-selected' : ''}`}
-              key={item.id}
-              onClick={() => this.onSelect(item)}
-            >
-              <div className='swatch__item' style={{ background: item.value }}></div>
-            </div>
-          ))}
-        </div>
-      );
-    } else {
-      return null;
-    }
+  render() {
+    const { attribute, selectable, small } = this.props;
+    const type = attribute.type;
+
+    return (
+      <div className='attributes'>
+        {attribute.items.map(item => (
+          <div
+            className={`attributes__item ${type} ${this.isItemSelected(item) && `${type}-selected`} ${small && `${type}-small`}`}
+            key={item.id}
+            style={{ cursor: selectable ? 'pointer' : 'unset' }}
+            onClick={() => this.onSelect(item)}
+          >
+            {type === AttributeType.text ? item.value : <div className='swatch__item' style={{ background: item.value }}></div>}
+          </div>
+        ))}
+      </div>
+    );
   }
 }

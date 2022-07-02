@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { BasicLayout } from '../../components/BasicLayout/BasicLayout';
 import Category from '../../components/Category/Category';
-import { withLayout } from '../../components/hoc/BasicLayout';
 import categoryService from '../../services/CategoryService/category.service';
 import { Product } from '../../types/product.type';
 
@@ -45,7 +45,11 @@ class CategoryPage extends React.Component<CategoryPageProps, CategoryPageState>
   }
 
   render() {
-    return <div>{this.state.products && <Category category={this.state.currentCategory} products={this.state.products} />}</div>;
+    return (
+      <BasicLayout>
+        <div>{this.state.products ? <Category category={this.state.currentCategory} products={this.state.products} /> : <span>Loading...</span>}</div>
+      </BasicLayout>
+    );
   }
 }
-export default withLayout(withRouter(CategoryPage));
+export default withRouter(CategoryPage);

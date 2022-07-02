@@ -3,11 +3,11 @@ import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import AttributeItems from '../../components/AttributeItems/AttributeItems';
-import { withLayout } from '../../components/hoc/BasicLayout';
+import { BasicLayout } from '../../components/BasicLayout/BasicLayout';
 import productService from '../../services/ProductService/product.service';
-import { AppDispatch, RootState } from '../../store';
+import { AppDispatch } from '../../store';
 import { addToCart } from '../../store/reducers/cartReducer';
-import { CartProduct } from '../../types/cartProduct.type';
+import { CartProduct, SelectedAttribute } from '../../types/cartProduct.type';
 import { Product } from '../../types/product.type';
 import './ProductPage.scss';
 
@@ -18,12 +18,12 @@ type ProductPageProps = RouteComponentProps<RouteParams> & PropsFromRedux;
 interface ProductPageState {
   product: Product | null;
   currentImageIndex: number;
-  selectedAttributes: Map<string, string>;
+  selectedAttributes: SelectedAttribute[];
 }
 class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
   constructor(props: ProductPageProps) {
     super(props);
-    this.state = { product: null, currentImageIndex: 0, selectedAttributes: new Map() };
+    this.state = { product: null, currentImageIndex: 0, selectedAttributes: [] };
 
     this.onAttributeItemSelect = this.onAttributeItemSelect.bind(this);
     this.addProductToCart = this.addProductToCart.bind(this);
@@ -45,16 +45,44 @@ class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
 
   onAttributeItemSelect(attributeId: string, itemId: string) {
     this.setState(state => {
-      const selectedAttributes = state.selectedAttributes;
-      selectedAttributes.set(attributeId, itemId);
-      return { selectedAttributes };
+      const { selectedAttributes } = state;
+
+      if (selectedAttributes.find(attr => attr.attributeId == attributeId)) {
+        // update element
+        return {
+          selectedAttributes: selectedAttributes.map(obj => {
+            if (obj.attributeId === attributeId) {
+              return { ...obj, itemId };
+            }
+
+            return obj;
+          })
+        };
+      } else {
+        // add element
+        return { selectedAttributes: [...selectedAttributes, { attributeId, itemId }] };
+      }
     });
   }
 
   addProductToCart() {
-    console.log('add');
-    console.log(this.state.selectedAttributes);
-    this.props.addToCart()
+    const { selectedAttributes, product } = this.state;
+
+    if (product) {
+      if (selectedAttributes.length != product.attributes.length) {
+        console.log('select attrs!');
+        return;
+      }
+
+      const cartProduct: CartProduct = {
+        quantity: 1,
+        selectedAttributes: [...selectedAttributes],
+        product
+      };
+      console.log(cartProduct);
+
+      this.props.addToCart(cartProduct);
+    }
   }
 
   render() {
@@ -65,53 +93,51 @@ class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
     }
 
     return (
-      <div className='product'>
-        <div className='gallery'>
-          <ul className='gallery__list'>
-            {product.gallery.map((img, index) => (
-              <li className='gallery__item' key={img}>
-                <img className='gallery__image' src={img} alt={img} onClick={() => this.onImageSelect(index)} />
-              </li>
-            ))}
-          </ul>
-          <img className='gallery__image-selected' src={product.gallery[this.state.currentImageIndex]} />
-        </div>
-        <div className='product__info'>
-          <span className='product__brand'>{product.brand}</span>
-          <span className='product__title'>{product.name}</span>
-          <div className='attribute '>
-            {product.attributes.map(attr => (
-              <div className='attribute__item' key={attr.id}>
-                <span className='attribute__title'>{attr.name}:</span>
-                <AttributeItems attribute={attr} onAttributeItemSelect={this.onAttributeItemSelect} />
-              </div>
-            ))}
+      <BasicLayout>
+        <div className='product'>
+          <div className='gallery'>
+            <ul className='gallery__list'>
+              {product.gallery.map((img, index) => (
+                <li className='gallery__item' key={img}>
+                  <img className='gallery__image' src={img} alt={img} onClick={() => this.onImageSelect(index)} />
+                </li>
+              ))}
+            </ul>
+            <img className='gallery__image-selected' src={product.gallery[this.state.currentImageIndex]} />
           </div>
-          <span className='attribute__title'>Price:</span>
-          <span className='product__price'>
-            {product.prices[0].currency.symbol}
-            {product.prices[0].amount}
-          </span>
-          <button className='product__add' onClick={this.addProductToCart}>
-            ADD TO CART
-          </button>
-          {/* TODO description style */}
-          <span className='product__description' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }}></span>
+          <div className='product__info'>
+            <span className='product__brand'>{product.brand}</span>
+            <span className='product__title'>{product.name}</span>
+            <div className='attribute '>
+              {product.attributes.map(attr => (
+                <div className='attribute__item' key={attr.id}>
+                  <span className='attribute__title'>{attr.name}:</span>
+                  <AttributeItems attribute={attr} onAttributeItemSelect={this.onAttributeItemSelect} selectable />
+                </div>
+              ))}
+            </div>
+            <span className='attribute__title'>Price:</span>
+            <span className='product__price'>
+              {product.prices[0].currency.symbol}
+              {product.prices[0].amount}
+            </span>
+            <button className='product__add' onClick={this.addProductToCart}>
+              ADD TO CART
+            </button>
+            <span className='product__description' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }}></span>
+          </div>
         </div>
-      </div>
+      </BasicLayout>
     );
   }
 }
 
-const mapStateToProps = (state: RootState) => ({
-  products: state.cart.products
-});
-
+const mapStateToProps = () => ({});
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-  addToCart: (products: CartProduct[]) => dispatch(addToCart(products))
+  addToCart: (product: CartProduct) => dispatch(addToCart(product))
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default withLayout(withRouter(connector(ProductPage)));
+export default withRouter(connector(ProductPage));

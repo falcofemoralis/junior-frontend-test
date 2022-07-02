@@ -15,7 +15,6 @@ $selected-image-height: 500px;
     &__title {
         font-weight: 400;
         font-size: 30px;
-        line-height: 27px;
         color: #1D1F22;
         margin: 15px 0 15px 0;
     }
@@ -23,14 +22,12 @@ $selected-image-height: 500px;
     &__brand {
         font-weight: 600;
         font-size: 30px;
-        line-height: 27px;
         color: #1D1F22;
     }
 
     &__price {
         font-weight: 700;
         font-size: 24px;
-        line-height: 18px;
         display: flex;
         align-items: center;
         color: #1D1F22;
@@ -51,14 +48,21 @@ $selected-image-height: 500px;
         margin: 35px 0 35px 0;
     }
 
-    &__description {
+    &__description * {
         font-family: 'Roboto';
         font-weight: 400;
         font-size: 16px;
-        line-height: 159.96%;
         color: #1D1F22;
         max-height: 150px;
-        //overflow: auto;
+        overflow: auto;
+    }
+
+    &__description ul {
+        list-style: none;
+    }
+
+    &__description li {
+        padding: 5px 0 5px 0;
     }
 }
 
