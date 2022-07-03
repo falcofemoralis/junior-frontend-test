@@ -7,7 +7,7 @@ import { BasicLayout } from '../../components/BasicLayout/BasicLayout';
 import productService from '../../services/ProductService/product.service';
 import { AppDispatch } from '../../store';
 import { addToCart } from '../../store/reducers/cartReducer';
-import { CartProduct, SelectedAttribute } from '../../types/cartProduct.type';
+import { CartItem, SelectedAttribute } from '../../types/cartItem.type';
 import { Product } from '../../types/product.type';
 import './ProductPage.scss';
 
@@ -19,11 +19,12 @@ interface ProductPageState {
   product: Product | null;
   currentImageIndex: number;
   selectedAttributes: SelectedAttribute[];
+  error: string;
 }
 class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
   constructor(props: ProductPageProps) {
     super(props);
-    this.state = { product: null, currentImageIndex: 0, selectedAttributes: [] };
+    this.state = { product: null, currentImageIndex: 0, selectedAttributes: [], error: '' };
 
     this.onAttributeItemSelect = this.onAttributeItemSelect.bind(this);
     this.addProductToCart = this.addProductToCart.bind(this);
@@ -44,6 +45,10 @@ class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
   }
 
   onAttributeItemSelect(attributeId: string, itemId: string) {
+    if (this.state.error) {
+      this.setState({ error: '' });
+    }
+
     this.setState(state => {
       const { selectedAttributes } = state;
 
@@ -70,23 +75,22 @@ class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
 
     if (product) {
       if (selectedAttributes.length != product.attributes.length) {
-        console.log('select attrs!');
+        this.setState({ error: 'Select attributes!' });
         return;
       }
 
-      const cartProduct: CartProduct = {
+      const cartItem: CartItem = {
         quantity: 1,
         selectedAttributes: [...selectedAttributes],
         product
       };
-      console.log(cartProduct);
 
-      this.props.addToCart(cartProduct);
+      this.props.addToCart(cartItem);
     }
   }
 
   render() {
-    const { product } = this.state;
+    const { product, error } = this.state;
 
     if (!product) {
       return <div>Loading</div>;
@@ -112,7 +116,7 @@ class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
               {product.attributes.map(attr => (
                 <div className='attribute__item' key={attr.id}>
                   <span className='attribute__title'>{attr.name}:</span>
-                  <AttributeItems attribute={attr} onAttributeItemSelect={this.onAttributeItemSelect} selectable />
+                  <AttributeItems attribute={attr} onAttributeItemSelect={this.onAttributeItemSelect} selectable={product.inStock} />
                 </div>
               ))}
             </div>
@@ -121,9 +125,10 @@ class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
               {product.prices[0].currency.symbol}
               {product.prices[0].amount}
             </span>
-            <button className='product__add' onClick={this.addProductToCart}>
+            <button className='product__add' onClick={this.addProductToCart} disabled={!product.inStock}>
               ADD TO CART
             </button>
+            {error && <span className='product__hint'>{error}</span>}
             <span className='product__description' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }}></span>
           </div>
         </div>
@@ -134,7 +139,7 @@ class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
 
 const mapStateToProps = () => ({});
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-  addToCart: (product: CartProduct) => dispatch(addToCart(product))
+  addToCart: (product: CartItem) => dispatch(addToCart(product))
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

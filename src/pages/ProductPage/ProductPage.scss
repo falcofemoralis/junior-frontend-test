@@ -48,6 +48,17 @@ $selected-image-height: 500px;
         margin: 35px 0 35px 0;
     }
 
+    &__add:disabled {
+        opacity: 0.5;
+        cursor: unset;
+    }
+
+    &__hint {
+        font-weight: bold;
+        color: red;
+        margin-bottom: 15px;
+    }
+
     &__description * {
         font-family: 'Roboto';
         font-weight: 400;

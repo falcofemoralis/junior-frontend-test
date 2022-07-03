@@ -2,9 +2,9 @@ import React from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import categoryService from '../../services/CategoryService/category.service';
 import Category from '../../types/category.type';
-import BrandIcon from './../../assets/brandIcon.svg';
-import Cart from './../../assets/cart.svg';
-import Currency from './../../assets/currency.svg';
+import LogoIcon from './../../assets/logo.svg';
+import CartIcon from './../../assets/cart.svg';
+import CurrencyIcon from './../../assets/currency.svg';
 import { selectProductsCount } from '../../store/reducers/cartReducer';
 import './Header.scss';
 import { RootState } from '../../store';
@@ -68,9 +68,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                   </Link>
                 ))}
             </nav>
-            <img className='header__logo' src={BrandIcon} alt='Logo' />
+            <img className='header__logo' src={LogoIcon} alt='Logo' />
             <div className='header__buttons'>
-              <img src={Currency} alt='Currency Logo' />
+              <img src={CurrencyIcon} alt='Currency Logo' />
               <div className='cart'>
                 <button className='cart__button' onClick={this.toggleCart}>
                   {productsAmount > 0 && (
@@ -78,7 +78,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                       <span className='cart__count-text'>{productsAmount}</span>
                     </div>
                   )}
-                  <img className='cart__logo' src={Cart} alt='Cart Logo' />
+                  <img className='cart__logo' src={CartIcon} alt='Cart Logo' />
                 </button>
               </div>
               <CartModal open={cartOpen} />

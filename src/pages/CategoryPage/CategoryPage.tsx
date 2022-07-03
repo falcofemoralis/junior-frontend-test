@@ -1,9 +1,10 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { BasicLayout } from '../../components/BasicLayout/BasicLayout';
-import Category from '../../components/Category/Category';
+import ProductCard from '../../components/ProductCard/ProductCard';
 import categoryService from '../../services/CategoryService/category.service';
 import { Product } from '../../types/product.type';
+import './CategoryPage.scss';
 
 interface RouteParams {
   category: string;
@@ -45,9 +46,26 @@ class CategoryPage extends React.Component<CategoryPageProps, CategoryPageState>
   }
 
   render() {
+    const { products, currentCategory } = this.state;
+
     return (
       <BasicLayout>
-        <div>{this.state.products ? <Category category={this.state.currentCategory} products={this.state.products} /> : <span>Loading...</span>}</div>
+        <div>
+          {products ? (
+            <div className='category'>
+              <h2 className='category__title'>{currentCategory}</h2>
+              <ul className='category__products'>
+                {products.map(product => (
+                  <li key={product.id} className='category__products__item'>
+                    <ProductCard product={product} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <span>Loading...</span>
+          )}
+        </div>
       </BasicLayout>
     );
   }

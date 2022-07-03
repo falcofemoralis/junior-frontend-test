@@ -24,13 +24,11 @@ export default class AttributeItems extends React.Component<AttributeItemsProps,
     this.isItemSelected = this.isItemSelected.bind(this);
   }
 
-  isSelectable() {
-    return Boolean(this.props.onAttributeItemSelect);
-  }
-
   onSelect(item: AttributeItem) {
-    if (this.props.onAttributeItemSelect && item.id !== this.state.selectedAttribute?.id) {
-      this.props.onAttributeItemSelect(this.props.attribute.id, item.id);
+    if (item.id !== this.state.selectedAttribute?.id && this.props.selectable) {
+      if (this.props.onAttributeItemSelect) {
+        this.props.onAttributeItemSelect(this.props.attribute.id, item.id);
+      }
       this.setState({ selectedAttribute: item });
     }
   }
@@ -52,7 +50,11 @@ export default class AttributeItems extends React.Component<AttributeItemsProps,
             style={{ cursor: selectable ? 'pointer' : 'unset' }}
             onClick={() => this.onSelect(item)}
           >
-            {type === AttributeType.text ? item.value : <div className='swatch__item' style={{ background: item.value }}></div>}
+            {type === AttributeType.text ? (
+              item.value
+            ) : (
+              <div className={`swatch__item ${small && `swatch__item-small`}`} style={{ background: item.value }}></div>
+            )}
           </div>
         ))}
       </div>

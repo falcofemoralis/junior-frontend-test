@@ -1,25 +1,41 @@
 .attributes {
     display: flex;
+    flex-flow: wrap;
 
     &__item {
-        margin-right: 10px;
+        margin: 10px 10px 0 0;
     }
 }
 
+
+$swatch-size: 36px;
+$swatch-size-small: 20px;
+
 .swatch {
-    width: 36px;
-    height: 36px;
+    width: $swatch-size;
+    height: $swatch-size;
     display: flex;
     justify-content: center;
     align-items: center;
 
     &__item {
-        width: 32px;
-        height: 32px;
+        width: calc($swatch-size - 4px);
+        height: calc($swatch-size - 4px);
+    }
+
+    &__item-small {
+        width: calc($swatch-size-small - 4px);
+        height: calc($swatch-size-small - 4px);
     }
 
     &-selected {
         border: 1px solid var(--main-green-color);
+    }
+
+
+    &-small {
+        width: calc($swatch-size-small);
+        height: calc($swatch-size-small);
     }
 }
 

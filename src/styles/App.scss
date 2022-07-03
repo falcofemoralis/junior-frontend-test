@@ -1,9 +1,8 @@
 .container {
-    padding: 0 var(--container-margin) 0 var(--container-margin);
-    max-width: 1440px;
+    max-width: var(--container-size);
     margin: 0 auto;
 }
 
 main {
-    padding: var(--header-height) 0 0;
+    padding: var(--header-height) var(--container-margin) 0 var(--container-margin);
 }

@@ -1,18 +1,99 @@
+$cart-height: 70vh;
+$cart-panel-height: 126px;
+
 .cartModal {
     position: absolute;
-    max-height: 50vh;
+    max-height: $cart-height;
     width: 325px;
     z-index: 15;
     right: 0;
     top: var(--header-height);
     background: #fff;
-    overflow: hidden;
+    overflow-y: hidden;
+    padding: 16px;
 
     &__inner {
-        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        max-height: $cart-height;
+        padding-bottom: calc($cart-panel-height + 20px);
+
+        &::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: #eee;
+            border-radius: 4px;
+        }
+
+        &-empty {
+            min-height: 15vh;
+            padding: unset;
+        }
     }
 
     &__title {
-  
+        margin-bottom: 16px;
+        font-weight: 700;
+        font-size: 16px;
+        color: #1D1F22;
+    }
+
+    &__panel {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        padding-left: inherit;
+        padding-right: inherit;
+    }
+
+    &__row {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        padding: 16px 0 16px;
+    }
+
+    &__total {
+        font-family: 'Roboto';
+        font-weight: 500;
+        font-size: 16px;
+        color: #1D1F22;
+    }
+
+    &__price {
+        font-weight: 700;
+        font-size: 16px;
+        color: #1D1F22;
+    }
+
+    &__bag {
+        width: 140px;
+        height: 43px;
+        background: #FFFFFF;
+        border: 1px solid #1D1F22;
+        font-weight: 600;
+        font-size: 14px;
+        text-transform: uppercase;
+        color: #1D1F22;
+        cursor: pointer;
+    }
+
+    &__check {
+        width: 140px;
+        height: 43px;
+        background: var(--main-green-color);
+        border: none;
+        outline: none;
+        font-weight: 600;
+        font-size: 14px;
+        text-transform: uppercase;
+        color: #FFFFFF;
+        cursor: pointer;
     }
 }

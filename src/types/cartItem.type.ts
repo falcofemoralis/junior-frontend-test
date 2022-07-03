@@ -4,7 +4,7 @@ export interface SelectedAttribute {
   attributeId: string;
   itemId: string;
 }
-export interface CartProduct {
+export interface CartItem {
   quantity: number;
   selectedAttributes: SelectedAttribute[];
   product: Product;
