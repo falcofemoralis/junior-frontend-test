@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import productService from '../../services/ProductService/product.service';
 import { RootState } from '../../store';
-import { CartItem as CartItemType, LocalCartItem } from '../../types/cartItem.type';
+import { LocalCartItem } from '../../types/cartItem.type';
 import { CartItem } from './../../types/cartItem.type';
 
 const CART_STORAGE_KEY = 'cart';

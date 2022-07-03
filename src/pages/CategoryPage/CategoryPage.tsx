@@ -50,22 +50,20 @@ class CategoryPage extends React.Component<CategoryPageProps, CategoryPageState>
 
     return (
       <BasicLayout>
-        <div>
-          {products ? (
-            <div className='category'>
-              <h2 className='category__title'>{currentCategory}</h2>
-              <ul className='category__products'>
-                {products.map(product => (
-                  <li key={product.id} className='category__products__item'>
-                    <ProductCard product={product} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <span>Loading...</span>
-          )}
-        </div>
+        {products ? (
+          <div className='category'>
+            <h2 className='category__title'>{currentCategory}</h2>
+            <ul className='category__products'>
+              {products.map(product => (
+                <li key={product.id} className='category__products__item'>
+                  <ProductCard product={product} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <span>Loading...</span>
+        )}
       </BasicLayout>
     );
   }

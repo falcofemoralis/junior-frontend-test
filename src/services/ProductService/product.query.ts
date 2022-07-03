@@ -22,9 +22,19 @@ export const GET_PRODUCT = gql`
       prices {
         amount
         currency {
+          label
           symbol
         }
       }
+    }
+  }
+`;
+
+export const GET_CURRENCIES = gql`
+  query {
+    currencies {
+      label
+      symbol
     }
   }
 `;

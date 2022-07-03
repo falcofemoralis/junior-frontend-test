@@ -100,3 +100,28 @@
 
   &__logo {}
 }
+
+.currencies {
+  position: relative;
+  margin-right: 10px;
+
+  &__button {
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__symbol {
+    margin-right: 5px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    color: #1D1F22;
+  }
+
+  &__arrow {}
+}

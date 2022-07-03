@@ -1,5 +1,5 @@
-import { GET_PRODUCT } from './product.query';
-import { Product } from './../../types/product.type';
+import { GET_PRODUCT, GET_CURRENCIES } from './product.query';
+import { Currency, Product } from './../../types/product.type';
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { client } from '..';
 
@@ -13,6 +13,11 @@ class ProductService {
   async getProduct(id: string) {
     const product = (await this.apolloClient.query<{ product: Product }>({ query: GET_PRODUCT, variables: { id } })).data.product;
     return product;
+  }
+
+  async getCurrencies() {
+    const currencies = (await this.apolloClient.query<{ currencies: Currency[] }>({ query: GET_CURRENCIES })).data.currencies;
+    return currencies;
   }
 }
 

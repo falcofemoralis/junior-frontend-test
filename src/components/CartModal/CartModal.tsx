@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import productService from '../../services/ProductService/product.service';
 import { AppDispatch, RootState } from '../../store';
-import { addToCart, getLocalCart, initCart, removeFromCart, selectProducts } from '../../store/reducers/cartReducer';
+import { addToCart, removeFromCart, selectProducts } from '../../store/reducers/cartReducer';
+import { selectCurrency } from '../../store/reducers/currencyReducer';
 import { CartItem as CartItemType } from '../../types/cartItem.type';
+import { Currency } from '../../types/product.type';
+import { getPrice } from '../../utils/getPrice';
 import CartItem from '../CartItem/CartItem';
 import './CartModal.scss';
 
@@ -11,24 +13,6 @@ interface CartModalProps extends PropsFromRedux {
   open: boolean;
 }
 class CartModal extends React.Component<CartModalProps> {
-  componentDidMount() {
-    this.initProducts();
-  }
-
-  async initProducts() {
-    const localCartItems = getLocalCart();
-    if (localCartItems) {
-      const items: CartItemType[] = [];
-
-      for (const item of localCartItems) {
-        const product = await productService.getProduct(item.productId);
-        items.push({ product, quantity: item.quantity, selectedAttributes: item.selectedAttributes });
-      }
-
-      this.props.initCart(items);
-    }
-  }
-
   getProductKey(product: CartItemType) {
     let key = `${product.product.id}`;
     for (const attr of product.selectedAttributes) {
@@ -39,11 +23,11 @@ class CartModal extends React.Component<CartModalProps> {
   }
 
   getTotal() {
-    return this.props.cartItems.reduce((acc, current) => (acc += current.product.prices[0].amount * current.quantity), 0);
+    return this.props.cartItems.reduce((acc, current) => (acc += getPrice(current.product, this.props.currency).amount * current.quantity), 0);
   }
 
   render() {
-    const { cartItems, addToCart, removeFromCart } = this.props;
+    const { cartItems, addToCart, removeFromCart, currency } = this.props;
 
     return this.props.open ? (
       <div className='cartModal'>
@@ -56,7 +40,9 @@ class CartModal extends React.Component<CartModalProps> {
         <div className='cartModal__panel'>
           <div className='cartModal__row'>
             <span className='cartModal__total'>Total</span>
-            <span className='cartModal__price'>{this.getTotal()}</span>
+            <span className='cartModal__price'>
+              {currency?.symbol} {this.getTotal()}
+            </span>
           </div>
           <div className='cartModal__row'>
             <button className='cartModal__bag'>View Bag</button>
@@ -69,10 +55,10 @@ class CartModal extends React.Component<CartModalProps> {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  cartItems: selectProducts(state)
+  cartItems: selectProducts(state),
+  currency: selectCurrency(state)
 });
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-  initCart: (items: CartItemType[]) => dispatch(initCart(items)),
   addToCart: (product: CartItemType) => dispatch(addToCart(product)),
   removeFromCart: (product: CartItemType) => dispatch(removeFromCart(product))
 });

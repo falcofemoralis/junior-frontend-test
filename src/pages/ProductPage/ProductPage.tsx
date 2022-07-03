@@ -5,11 +5,13 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import AttributeItems from '../../components/AttributeItems/AttributeItems';
 import { BasicLayout } from '../../components/BasicLayout/BasicLayout';
 import productService from '../../services/ProductService/product.service';
-import { AppDispatch } from '../../store';
+import { AppDispatch, RootState } from '../../store';
 import { addToCart } from '../../store/reducers/cartReducer';
 import { CartItem, SelectedAttribute } from '../../types/cartItem.type';
 import { Product } from '../../types/product.type';
+import { selectCurrency } from '../../store/reducers/currencyReducer';
 import './ProductPage.scss';
+import { getPriceString } from '../../utils/getPrice';
 
 interface RouteParams {
   id: string;
@@ -90,6 +92,7 @@ class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
   }
 
   render() {
+    const { currency } = this.props;
     const { product, error } = this.state;
 
     if (!product) {
@@ -121,10 +124,7 @@ class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
               ))}
             </div>
             <span className='attribute__title'>Price:</span>
-            <span className='product__price'>
-              {product.prices[0].currency.symbol}
-              {product.prices[0].amount}
-            </span>
+            <span className='product__price'>{getPriceString(product, currency)}</span>
             <button className='product__add' onClick={this.addProductToCart} disabled={!product.inStock}>
               ADD TO CART
             </button>
@@ -137,7 +137,9 @@ class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
   }
 }
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state: RootState) => ({
+  currency: selectCurrency(state)
+});
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
   addToCart: (product: CartItem) => dispatch(addToCart(product))
 });

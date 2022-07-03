@@ -3,10 +3,12 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CartIcon from '../../assets/cart_white.svg';
 import productService from '../../services/ProductService/product.service';
-import { AppDispatch } from '../../store';
+import { AppDispatch, RootState } from '../../store';
 import { addToCart } from '../../store/reducers/cartReducer';
+import { selectCurrency } from '../../store/reducers/currencyReducer';
 import { CartItem, SelectedAttribute } from '../../types/cartItem.type';
 import { Product } from '../../types/product.type';
+import { getPriceString } from '../../utils/getPrice';
 import './ProductCard.scss';
 
 interface ProductCardProps extends PropsFromRedux {
@@ -38,7 +40,7 @@ class ProductCard extends React.Component<ProductCardProps> {
   }
 
   render() {
-    const { product } = this.props;
+    const { product, currency } = this.props;
 
     return (
       <div className='productCard'>
@@ -50,10 +52,7 @@ class ProductCard extends React.Component<ProductCardProps> {
           <span className='productCard__name'>
             {product.brand} {product.name}
           </span>
-          <span className='productCard__price'>
-            {product.prices[0].currency.symbol}
-            {product.prices[0].amount}
-          </span>
+          <span className='productCard__price'>{getPriceString(product, currency)}</span>
         </Link>
         {product.inStock && (
           <button className='productCard__cart' onClick={this.addProduct}>
@@ -65,7 +64,9 @@ class ProductCard extends React.Component<ProductCardProps> {
   }
 }
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state: RootState) => ({
+  currency: selectCurrency(state)
+});
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
   addToCart: (product: CartItem) => dispatch(addToCart(product))
 });

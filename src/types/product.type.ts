@@ -1,4 +1,5 @@
 export interface Currency {
+  label: string;
   symbol: string;
 }
 export interface Price {

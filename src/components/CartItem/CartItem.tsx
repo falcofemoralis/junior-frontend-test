@@ -1,16 +1,20 @@
 import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { RootState } from '../../store';
+import { selectCurrency } from '../../store/reducers/currencyReducer';
 import { CartItem as CartItemType } from '../../types/cartItem.type';
+import { getPriceString } from '../../utils/getPrice';
 import AttributeItems from '../AttributeItems/AttributeItems';
 import './CartItem.scss';
 
-interface CartItemProps {
+interface CartItemProps extends PropsFromRedux {
   cartItem: CartItemType;
   onAdd: (cartItem: CartItemType) => void;
   onRemove: (cartItem: CartItemType) => void;
 }
 class CartItem extends React.Component<CartItemProps> {
   render() {
-    const { cartItem, onAdd, onRemove } = this.props;
+    const { cartItem, onAdd, onRemove, currency } = this.props;
 
     return (
       <div className='cartItem'>
@@ -18,7 +22,7 @@ class CartItem extends React.Component<CartItemProps> {
           <div className='cartItem__info'>
             <span className='cartItem__brand'>{cartItem.product.brand}</span>
             <span className='cartItem__name'>{cartItem.product.name}</span>
-            <span className='cartItem__price'>{cartItem.product.prices[0].amount}</span>
+            <span className='cartItem__price'>{getPriceString(cartItem.product, currency)}</span>
             {cartItem.product.attributes.map(attr => (
               <div className='cartItem__attribute' key={attr.id}>
                 <span className='cartItem__attribute__title'>{attr.name}:</span>
@@ -42,4 +46,12 @@ class CartItem extends React.Component<CartItemProps> {
   }
 }
 
-export default CartItem;
+const mapStateToProps = (state: RootState) => ({
+  currency: selectCurrency(state)
+});
+const mapDispatchToProps = () => ({});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(CartItem);

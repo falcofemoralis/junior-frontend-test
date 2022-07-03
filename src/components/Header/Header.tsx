@@ -1,19 +1,23 @@
 import React from 'react';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import categoryService from '../../services/CategoryService/category.service';
-import Category from '../../types/category.type';
-import LogoIcon from './../../assets/logo.svg';
-import CartIcon from './../../assets/cart.svg';
-import CurrencyIcon from './../../assets/currency.svg';
-import { selectProductsCount } from '../../store/reducers/cartReducer';
-import './Header.scss';
-import { RootState } from '../../store';
 import { connect, ConnectedProps } from 'react-redux';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import DownArrowIcon from '../../assets/down_arrow.svg';
+import UpArrowIcon from '../../assets/up_arrow.svg';
+import categoryService from '../../services/CategoryService/category.service';
+import { RootState } from '../../store';
+import { selectProductsCount } from '../../store/reducers/cartReducer';
+import { selectCurrency } from '../../store/reducers/currencyReducer';
+import Category from '../../types/category.type';
 import CartModal from '../CartModal/CartModal';
+import CurrenciesModal from '../CurrenciesModal/CurrenciesModal';
+import CartIcon from './../../assets/cart.svg';
+import LogoIcon from './../../assets/logo.svg';
+import './Header.scss';
 
 interface HeaderState {
   categories: Category[];
   cartOpen: boolean;
+  currenciesOpen: boolean;
 }
 interface RouteParams {
   category: string;
@@ -24,8 +28,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   constructor(props: HeaderProps) {
     super(props);
 
-    this.state = { categories: [], cartOpen: false };
+    this.state = { categories: [], cartOpen: false, currenciesOpen: false };
     this.toggleCart = this.toggleCart.bind(this);
+    this.toggleCurrencies = this.toggleCurrencies.bind(this);
   }
 
   componentDidMount() {
@@ -36,7 +41,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     const categories = await categoryService.getCategories();
     this.setState({ categories });
 
-    if (!this.props.match.params.category && this.props.match.path == '/') {
+    if (!this.props.match.params.category && this.props.location.pathname == '/') {
       this.props.history.push(`./${categories[0].name}`);
     }
   }
@@ -47,52 +52,65 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     });
   }
 
+  toggleCurrencies() {
+    this.setState(({ currenciesOpen }) => {
+      return { currenciesOpen: !currenciesOpen };
+    });
+  }
+
   render() {
-    const { categories, cartOpen } = this.state;
-    const { productsAmount } = this.props;
+    const { categories, cartOpen, currenciesOpen } = this.state;
+    const { productsAmount, currency } = this.props;
     const currentCategory = this.props.match.params.category;
 
     return (
-      <>
-        <header className='header'>
-          <div className='header__inner'>
-            <nav className='header__navigation'>
-              {categories.length > 0 &&
-                categories.map(category => (
-                  <Link
-                    to={`/${category.name}`}
-                    className={`header__link ${currentCategory === category.name ? 'header__link-selected' : ''}`}
-                    key={category.name}
-                  >
-                    {category.name}
-                  </Link>
-                ))}
-            </nav>
-            <img className='header__logo' src={LogoIcon} alt='Logo' />
-            <div className='header__buttons'>
-              <img src={CurrencyIcon} alt='Currency Logo' />
-              <div className='cart'>
-                <button className='cart__button' onClick={this.toggleCart}>
-                  {productsAmount > 0 && (
-                    <div className='cart__count'>
-                      <span className='cart__count-text'>{productsAmount}</span>
-                    </div>
-                  )}
-                  <img className='cart__logo' src={CartIcon} alt='Cart Logo' />
+      <header className='header'>
+        <div className='header__inner'>
+          <nav className='header__navigation'>
+            {categories.length > 0 &&
+              categories.map(category => (
+                <Link
+                  to={`/${category.name}`}
+                  className={`header__link ${currentCategory === category.name ? 'header__link-selected' : ''}`}
+                  key={category.name}
+                >
+                  {category.name}
+                </Link>
+              ))}
+          </nav>
+          <img className='header__logo' src={LogoIcon} alt='Logo' />
+          <div className='header__buttons'>
+            {currency && (
+              <div className='currencies'>
+                <button className='currencies__button' onClick={this.toggleCurrencies}>
+                  <span className='currencies__symbol'>{currency.symbol}</span>
+                  <img className='currencies__arrow' src={currenciesOpen ? UpArrowIcon : DownArrowIcon} />
                 </button>
+                <CurrenciesModal open={currenciesOpen} onClose={this.toggleCurrencies} />
               </div>
-              <CartModal open={cartOpen} />
+            )}
+            <div className='cart'>
+              <button className='cart__button' onClick={this.toggleCart}>
+                {productsAmount > 0 && (
+                  <div className='cart__count'>
+                    <span className='cart__count-text'>{productsAmount}</span>
+                  </div>
+                )}
+                <img className='cart__logo' src={CartIcon} alt='Cart Logo' />
+              </button>
             </div>
+            <CartModal open={cartOpen} />
           </div>
-          {cartOpen && <div className='header__mask'></div>}
-        </header>
-      </>
+        </div>
+        {cartOpen && <div className='header__mask'></div>}
+      </header>
     );
   }
 }
 
 const mapStateToProps = (state: RootState) => ({
-  productsAmount: selectProductsCount(state)
+  productsAmount: selectProductsCount(state),
+  currency: selectCurrency(state)
 });
 const mapDispatchToProps = () => ({});
 
