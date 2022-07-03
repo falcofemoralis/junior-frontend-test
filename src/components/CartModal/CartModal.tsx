@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
+import productService from '../../services/ProductService/product.service';
 import { AppDispatch, RootState } from '../../store';
-import { addToCart, removeFromCart, selectProducts } from '../../store/reducers/cartReducer';
+import { addToCart, getLocalCart, initCart, removeFromCart, selectProducts } from '../../store/reducers/cartReducer';
 import { CartItem as CartItemType } from '../../types/cartItem.type';
 import CartItem from '../CartItem/CartItem';
 import './CartModal.scss';
@@ -10,6 +11,24 @@ interface CartModalProps extends PropsFromRedux {
   open: boolean;
 }
 class CartModal extends React.Component<CartModalProps> {
+  componentDidMount() {
+    this.initProducts();
+  }
+
+  async initProducts() {
+    const localCartItems = getLocalCart();
+    if (localCartItems) {
+      const items: CartItemType[] = [];
+
+      for (const item of localCartItems) {
+        const product = await productService.getProduct(item.productId);
+        items.push({ product, quantity: item.quantity, selectedAttributes: item.selectedAttributes });
+      }
+
+      this.props.initCart(items);
+    }
+  }
+
   getProductKey(product: CartItemType) {
     let key = `${product.product.id}`;
     for (const attr of product.selectedAttributes) {
@@ -53,6 +72,7 @@ const mapStateToProps = (state: RootState) => ({
   cartItems: selectProducts(state)
 });
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
+  initCart: (items: CartItemType[]) => dispatch(initCart(items)),
   addToCart: (product: CartItemType) => dispatch(addToCart(product)),
   removeFromCart: (product: CartItemType) => dispatch(removeFromCart(product))
 });
