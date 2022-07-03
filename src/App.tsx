@@ -10,6 +10,7 @@ import { CartItem as CartItemType } from './types/cartItem.type';
 import productService from './services/ProductService/product.service';
 import { Currency } from './types/product.type';
 import { initCurrencies } from './store/reducers/currencyReducer';
+import CartPage from './pages/CartPage/CartPage';
 
 class App extends React.Component<PropsFromRedux> {
   componentDidMount() {
@@ -42,6 +43,9 @@ class App extends React.Component<PropsFromRedux> {
           <Switch>
             <Route path='/product/:id'>
               <ProductPage />
+            </Route>
+            <Route path='/cart'>
+              <CartPage />
             </Route>
             <Route path='/:category?'>
               <CategoryPage />

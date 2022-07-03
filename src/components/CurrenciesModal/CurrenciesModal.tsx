@@ -8,6 +8,7 @@ import './CurrenciesModal.scss';
 interface CurrenciesModalProps extends PropsFromRedux {
   open: boolean;
   onClose: () => void;
+  currenciesBtnRef: React.RefObject<HTMLButtonElement>;
 }
 
 class CurrenciesModal extends React.Component<CurrenciesModalProps> {
@@ -24,17 +25,17 @@ class CurrenciesModal extends React.Component<CurrenciesModalProps> {
       return;
     }
 
-    if (!this.wrapperRef.current.contains(event.target as Node)) {
+    if (!this.wrapperRef.current.contains(event.target as Node) && !this.props.currenciesBtnRef.current?.contains(event.target as Node)) {
       this.props.onClose();
     }
   }
 
   componentDidMount() {
-    document.addEventListener('mousedown', this.handleClickOutside);
+    document.addEventListener('mouseup', this.handleClickOutside);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickOutside);
+    document.removeEventListener('mouseup', this.handleClickOutside);
   }
 
   onCurrencySelect(currency: Currency) {

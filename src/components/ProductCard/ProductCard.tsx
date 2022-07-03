@@ -25,7 +25,6 @@ class ProductCard extends React.Component<ProductCardProps> {
     const product = await productService.getProduct(this.props.product.id);
 
     const selectedAttributes: SelectedAttribute[] = [];
-
     for (const attr of product.attributes) {
       selectedAttributes.push({ attributeId: attr.id, itemId: attr.items[0].id });
     }

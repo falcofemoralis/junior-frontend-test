@@ -25,6 +25,8 @@ interface RouteParams {
 type HeaderProps = RouteComponentProps<RouteParams> & PropsFromRedux;
 
 class Header extends React.Component<HeaderProps, HeaderState> {
+  currenciesBtnRef = React.createRef<HTMLButtonElement>();
+
   constructor(props: HeaderProps) {
     super(props);
 
@@ -54,6 +56,8 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
   toggleCurrencies() {
     this.setState(({ currenciesOpen }) => {
+      console.log('toggle to ' + !currenciesOpen);
+
       return { currenciesOpen: !currenciesOpen };
     });
   }
@@ -82,11 +86,11 @@ class Header extends React.Component<HeaderProps, HeaderState> {
           <div className='header__buttons'>
             {currency && (
               <div className='currencies'>
-                <button className='currencies__button' onClick={this.toggleCurrencies}>
+                <button className='currencies__button' onClick={this.toggleCurrencies} ref={this.currenciesBtnRef}>
                   <span className='currencies__symbol'>{currency.symbol}</span>
                   <img className='currencies__arrow' src={currenciesOpen ? UpArrowIcon : DownArrowIcon} />
                 </button>
-                <CurrenciesModal open={currenciesOpen} onClose={this.toggleCurrencies} />
+                <CurrenciesModal open={currenciesOpen} onClose={this.toggleCurrencies} currenciesBtnRef={this.currenciesBtnRef} />
               </div>
             )}
             <div className='cart'>

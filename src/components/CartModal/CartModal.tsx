@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { AppDispatch, RootState } from '../../store';
-import { addToCart, removeFromCart, selectProducts } from '../../store/reducers/cartReducer';
+import { Link } from 'react-router-dom';
+import { RootState } from '../../store';
+import { selectProducts, selectTotalPrice } from '../../store/reducers/cartReducer';
 import { selectCurrency } from '../../store/reducers/currencyReducer';
 import { CartItem as CartItemType } from '../../types/cartItem.type';
-import { Currency } from '../../types/product.type';
 import { getPrice } from '../../utils/getPrice';
 import CartItem from '../CartItem/CartItem';
 import './CartModal.scss';
@@ -22,30 +22,28 @@ class CartModal extends React.Component<CartModalProps> {
     return key;
   }
 
-  getTotal() {
-    return this.props.cartItems.reduce((acc, current) => (acc += getPrice(current.product, this.props.currency).amount * current.quantity), 0);
-  }
-
   render() {
-    const { cartItems, addToCart, removeFromCart, currency } = this.props;
+    const { cartItems, currency, totalPrice } = this.props;
 
     return this.props.open ? (
       <div className='cartModal'>
         <div className={`cartModal__inner ${cartItems.length == 0 ? 'cartModal__inner-empty' : ''}`}>
           <span className='cartModal__title'>My Bag, {cartItems.length} items</span>
           {cartItems.map(cartItem => (
-            <CartItem key={this.getProductKey(cartItem)} cartItem={cartItem} onAdd={addToCart} onRemove={removeFromCart}></CartItem>
+            <CartItem key={this.getProductKey(cartItem)} cartItem={cartItem} small></CartItem>
           ))}
         </div>
         <div className='cartModal__panel'>
           <div className='cartModal__row'>
             <span className='cartModal__total'>Total</span>
             <span className='cartModal__price'>
-              {currency?.symbol} {this.getTotal()}
+              {currency?.symbol} {totalPrice.toFixed(2)}
             </span>
           </div>
           <div className='cartModal__row'>
-            <button className='cartModal__bag'>View Bag</button>
+            <Link className='cartModal__bag' to='/cart'>
+              View Bag
+            </Link>
             <button className='cartModal__check'>Check Out</button>
           </div>
         </div>
@@ -56,12 +54,10 @@ class CartModal extends React.Component<CartModalProps> {
 
 const mapStateToProps = (state: RootState) => ({
   cartItems: selectProducts(state),
+  totalPrice: selectTotalPrice(state),
   currency: selectCurrency(state)
 });
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-  addToCart: (product: CartItemType) => dispatch(addToCart(product)),
-  removeFromCart: (product: CartItemType) => dispatch(removeFromCart(product))
-});
+const mapDispatchToProps = () => ({});
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;

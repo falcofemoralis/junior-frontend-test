@@ -11,7 +11,7 @@ class ProductService {
   }
 
   async getProduct(id: string) {
-    const product = (await this.apolloClient.query<{ product: Product }>({ query: GET_PRODUCT, variables: { id } })).data.product;
+    const product = (await this.apolloClient.query<{ product: Product }>({ query: GET_PRODUCT, variables: { id }, fetchPolicy: 'network-only' })).data.product;
     return product;
   }
 

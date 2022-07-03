@@ -1,20 +1,48 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { RootState } from '../../store';
+import { RootState, AppDispatch } from '../../store';
 import { selectCurrency } from '../../store/reducers/currencyReducer';
 import { CartItem as CartItemType } from '../../types/cartItem.type';
 import { getPriceString } from '../../utils/getPrice';
 import AttributeItems from '../AttributeItems/AttributeItems';
+import { addToCart, removeFromCart } from '../../store/reducers/cartReducer';
 import './CartItem.scss';
 
 interface CartItemProps extends PropsFromRedux {
   cartItem: CartItemType;
-  onAdd: (cartItem: CartItemType) => void;
-  onRemove: (cartItem: CartItemType) => void;
+  small?: boolean;
+  gallery?: boolean;
 }
-class CartItem extends React.Component<CartItemProps> {
+interface CartItemState {
+  currentImageIndex: number;
+}
+class CartItem extends React.Component<CartItemProps, CartItemState> {
+  constructor(props: CartItemProps) {
+    super(props);
+    this.state = { currentImageIndex: 0 };
+
+    this.changeImage = this.changeImage.bind(this);
+  }
+
+  changeImage(next: boolean) {
+    this.setState(prev => {
+      const gallerySize = this.props.cartItem.product.gallery.length - 1;
+      let nextIndex = next ? prev.currentImageIndex + 1 : prev.currentImageIndex - 1;
+
+      if (nextIndex > gallerySize) {
+        nextIndex = 0;
+      }
+
+      if (nextIndex < 0) {
+        nextIndex = gallerySize;
+      }
+
+      return { currentImageIndex: nextIndex };
+    });
+  }
+
   render() {
-    const { cartItem, onAdd, onRemove, currency } = this.props;
+    const { cartItem, currency, addToCart, removeFromCart, small, gallery } = this.props;
 
     return (
       <div className='cartItem'>
@@ -26,21 +54,27 @@ class CartItem extends React.Component<CartItemProps> {
             {cartItem.product.attributes.map(attr => (
               <div className='cartItem__attribute' key={attr.id}>
                 <span className='cartItem__attribute__title'>{attr.name}:</span>
-                <AttributeItems attribute={attr} selectedItem={cartItem.selectedAttributes.find(a => attr.id === a.attributeId)?.itemId} small />
+                <AttributeItems attribute={attr} selectedItem={cartItem.selectedAttributes.find(a => attr.id === a.attributeId)?.itemId} small={small} />
               </div>
             ))}
           </div>
           <div className='cartItem__buttons'>
-            <button className='cartItem__button' onClick={() => onAdd(cartItem)}>
+            <button className='cartItem__button' onClick={() => addToCart(cartItem)}>
               +
             </button>
             <span className='cartItem__quantity'>{cartItem.quantity}</span>
-            <button className='cartItem__button' onClick={() => onRemove(cartItem)}>
+            <button className='cartItem__button' onClick={() => removeFromCart(cartItem)}>
               -
             </button>
           </div>
         </div>
-        <img className='cartItem__image' src={cartItem.product.gallery[0]} />
+        {gallery && (
+          <>
+            <button onClick={() => this.changeImage(true)}>Next</button>
+            <button onClick={() => this.changeImage(false)}>Pre</button>
+          </>
+        )}
+        <img className={`cartItem__image ${small ? 'cartItem__image-small' : ''}`} src={cartItem.product.gallery[this.state.currentImageIndex]} />
       </div>
     );
   }
@@ -49,7 +83,10 @@ class CartItem extends React.Component<CartItemProps> {
 const mapStateToProps = (state: RootState) => ({
   currency: selectCurrency(state)
 });
-const mapDispatchToProps = () => ({});
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+  addToCart: (product: CartItemType) => dispatch(addToCart(product)),
+  removeFromCart: (product: CartItemType) => dispatch(removeFromCart(product))
+});
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
