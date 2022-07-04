@@ -5,15 +5,39 @@
     &__title {
         font-weight: 700;
         font-size: 32px;
+        line-height: 40px;
         text-transform: uppercase;
-        color: #1D1F22;
-        padding: 50px 0 50px 0;
     }
 
     &__divider {
         height: 1px;
         width: 100%;
         background: #E5E5E5;
+        margin: 24px 0 24px;
+    }
+
+    &__panel {
+        margin-top: 32px;
+    }
+
+    &__row {
+        margin-bottom: 8px;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        width: 290px;
+    }
+
+    &__name {
+        font-weight: 400;
+        font-size: 24px;
+        line-height: 28px;
+    }
+
+    &__amount {
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 24px;
+        margin-left: 5px;
     }
 
     &__order {
@@ -21,7 +45,8 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 16px 32px;
+        margin-top: 8px;
+        margin-bottom: 16px;
         width: 279px;
         height: 43px;
         background: var(--main-green-color);
@@ -33,19 +58,11 @@
         text-transform: uppercase;
         color: #fff;
         cursor: pointer;
-    }
+        opacity: 1;
+        transition: opacity .3s;
 
-    &__name {
-        font-weight: 400;
-        font-size: 24px;
-        line-height: 28px;
-        color: #1D1F22;
+        &:hover {
+            opacity: 0.5;
+        }
     }
-
-    &__amount {
-        font-weight: 700;
-        font-size: 24px;
-        color: #1D1F22;
-    }
-
 }

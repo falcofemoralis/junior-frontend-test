@@ -10,5 +10,5 @@ export const getPriceString = (product: Product, currency: Currency | null) => {
   }
 
   const price = getPrice(product, currency);
-  return `${price.currency.symbol} ${price.amount}`;
+  return `${price.currency.symbol}${price.amount}`;
 };

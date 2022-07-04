@@ -101,7 +101,7 @@ class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
 
     return (
       <BasicLayout>
-        <div className='product'>
+        <div className='productPage'>
           <div className='gallery'>
             <ul className='gallery__list'>
               {product.gallery.map((img, index) => (
@@ -112,9 +112,9 @@ class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
             </ul>
             <img className='gallery__image-selected' src={product.gallery[this.state.currentImageIndex]} />
           </div>
-          <div className='product__info'>
+          <div className='product'>
             <span className='product__brand'>{product.brand}</span>
-            <span className='product__title'>{product.name}</span>
+            <span className='product__name'>{product.name}</span>
             <div className='attribute '>
               {product.attributes.map(attr => (
                 <div className='attribute__item' key={attr.id}>
@@ -123,10 +123,10 @@ class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
                 </div>
               ))}
             </div>
-            <span className='attribute__title'>Price:</span>
+            <span className='attribute__title product__price-title'>Price:</span>
             <span className='product__price'>{getPriceString(product, currency)}</span>
             <button className='product__add' onClick={this.addProductToCart} disabled={!product.inStock}>
-              ADD TO CART
+              Add To Cart
             </button>
             {error && <span className='product__hint'>{error}</span>}
             <span className='product__description' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }}></span>

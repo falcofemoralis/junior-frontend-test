@@ -4,5 +4,5 @@
 }
 
 main {
-    padding: var(--header-height) var(--container-margin) 0 var(--container-margin);
+    padding: calc(var(--header-height) + 80px) var(--container-margin) 0 var(--container-margin);
 }

@@ -42,19 +42,17 @@ export default class AttributeItems extends React.Component<AttributeItemsProps,
     const type = attribute.type;
 
     return (
-      <div className='attributes'>
+      <div className={`attributes attributes__${type} ${small ? `attributes__${type}-small` : ''}`}>
         {attribute.items.map(item => (
           <div
-            className={`attributes__item ${type} ${this.isItemSelected(item) && `${type}-selected`} ${small && `${type}-small`}`}
+            className={`attributes__item ${type} ${small ? `${type}-small` : ''} ${
+              this.isItemSelected(item) ? `${type}-${small ? 'small-' : ''}selected` : ''
+            } ${!selectable ? 'noSelect' : ''} ${item.id == 'White' ? 'swatch__border' : ''}`}
             key={item.id}
-            style={{ cursor: selectable ? 'pointer' : 'unset' }}
             onClick={() => this.onSelect(item)}
+            style={{ background: type == AttributeType.swatch ? item.value : 'auto' }}
           >
-            {type === AttributeType.text ? (
-              item.value
-            ) : (
-              <div className={`swatch__item ${small && `swatch__item-small`}`} style={{ background: item.value }}></div>
-            )}
+            {type === AttributeType.text && item.value}
           </div>
         ))}
       </div>

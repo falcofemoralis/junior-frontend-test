@@ -25,6 +25,10 @@ class CurrenciesModal extends React.Component<CurrenciesModalProps> {
       return;
     }
 
+    if (!this.props.open) {
+      return;
+    }
+
     if (!this.wrapperRef.current.contains(event.target as Node) && !this.props.currenciesBtnRef.current?.contains(event.target as Node)) {
       this.props.onClose();
     }
@@ -46,19 +50,21 @@ class CurrenciesModal extends React.Component<CurrenciesModalProps> {
   render() {
     const { open, currencies, currency } = this.props;
 
-    return open ? (
-      <div className='currenciesModal' ref={this.wrapperRef}>
-        {currencies.map(c => (
-          <button
-            className={`currenciesModal__item ${c.label == currency?.label ? 'currenciesModal__item-selected' : ''}`}
-            key={c.label}
-            onClick={() => this.onCurrencySelect(c)}
-          >
-            {c.label} {c.symbol}
-          </button>
-        ))}
+    return (
+      <div className={`currenciesModal ${open ? 'currenciesModal-active' : ''}`} ref={this.wrapperRef}>
+        <div className='currenciesModal__container'>
+          {currencies.map(c => (
+            <button
+              className={`currenciesModal__item ${c.label == currency?.label ? 'currenciesModal__item-selected' : ''}`}
+              key={c.label}
+              onClick={() => this.onCurrencySelect(c)}
+            >
+              {c.symbol} {c.label}
+            </button>
+          ))}
+        </div>
       </div>
-    ) : null;
+    );
   }
 }
 

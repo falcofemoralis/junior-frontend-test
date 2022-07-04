@@ -3,21 +3,22 @@ $cart-panel-height: 126px;
 
 .cartModal {
     position: absolute;
-    max-height: $cart-height;
-    width: 325px;
-    z-index: 15;
-    right: 0;
     top: var(--header-height);
+    right: 0;
+    width: 325px;
+    max-height: $cart-height;
+    padding: 16px;
     background: #fff;
     overflow-y: hidden;
-    padding: 16px;
+    z-index: 15;
 
     &__inner {
         display: flex;
         flex-direction: column;
-        overflow-y: auto;
         max-height: $cart-height;
         padding-bottom: calc($cart-panel-height + 20px);
+        margin-top: 16px;
+        overflow-y: auto;
 
         &::-webkit-scrollbar {
             width: 5px;
@@ -35,11 +36,22 @@ $cart-panel-height: 126px;
         }
     }
 
+    &__item {
+        margin: 20px 0;
+    }
+
     &__title {
-        margin-bottom: 16px;
-        font-weight: 700;
+        margin-bottom: 12px;
         font-size: 16px;
-        color: #1D1F22;
+        display: flex;
+
+        &-name {
+            font-weight: 700;
+        }
+
+        &-count {
+            font-weight: 500;
+        }
     }
 
     &__panel {
@@ -63,28 +75,32 @@ $cart-panel-height: 126px;
         font-family: 'Roboto';
         font-weight: 500;
         font-size: 16px;
-        color: #1D1F22;
+        line-height: 18px;
     }
 
     &__price {
         font-weight: 700;
         font-size: 16px;
-        color: #1D1F22;
     }
 
     &__bag {
         width: 140px;
         height: 43px;
-        background: #FFFFFF;
-        border: 1px solid #1D1F22;
-        font-weight: 600;
-        font-size: 14px;
-        text-transform: uppercase;
-        color: #1D1F22;
+        background: #fff;
+        border: 1px solid var(--main-black-color);
         cursor: pointer;
         display: flex;
         justify-content: center;
         align-items: center;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 120%;
+        text-transform: uppercase;
+        transition: background .3s;
+
+        &:hover {
+            background: var(--main-light-color);
+        }
     }
 
     &__check {
@@ -93,10 +109,17 @@ $cart-panel-height: 126px;
         background: var(--main-green-color);
         border: none;
         outline: none;
+        cursor: pointer;
         font-weight: 600;
         font-size: 14px;
+        line-height: 120%;
         text-transform: uppercase;
-        color: #FFFFFF;
-        cursor: pointer;
+        color: #fff;
+        opacity: 1;
+        transition: opacity .3s;
+
+        &:hover {
+            opacity: 0.5;
+        }
     }
 }

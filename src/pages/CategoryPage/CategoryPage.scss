@@ -1,9 +1,7 @@
 .category {
   &__title {
-    padding: 50px 0 50px 0;
     font-weight: 400;
     font-size: 42px;
-    color: #1d1f22;
     text-transform: capitalize;
   }
 
@@ -12,9 +10,11 @@
     flex-direction: row;
     flex-wrap: wrap;
     list-style: none;
+    gap: 103px 40px;
+    margin-top: 103px;
+  }
 
-    &__item {
-      width: 33%;
-    }
+  &__product {
+    width: 30%;
   }
 }

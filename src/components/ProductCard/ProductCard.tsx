@@ -43,19 +43,19 @@ class ProductCard extends React.Component<ProductCardProps> {
 
     return (
       <div className='productCard'>
-        <Link className='productCard__link' to={`/product/${product.id}`}>
+        <Link className='productCard__card' to={`/product/${product.id}`}>
           <div className='productCard__image__container'>
             {!product.inStock && <span className='productCard__stock'>Out of Stock</span>}
             <img className={`productCard__image ${!product.inStock ? 'productCard__image-stock' : ''}`} src={product.gallery[0]} alt={product.name} />
           </div>
-          <span className='productCard__name'>
+          <span className={`productCard__name ${!product.inStock ? 'productCard__name-stock' : ''}`}>
             {product.brand} {product.name}
           </span>
-          <span className='productCard__price'>{getPriceString(product, currency)}</span>
+          <span className={`productCard__price ${!product.inStock ? 'productCard__price-stock' : ''}`}>{getPriceString(product, currency)}</span>
         </Link>
         {product.inStock && (
-          <button className='productCard__cart' onClick={this.addProduct}>
-            <img className='productCard__cart__image' src={CartIcon} alt={'cart_icon'} />
+          <button className='productCart' onClick={this.addProduct}>
+            <img className='productCart__image' src={CartIcon} alt={'cart_icon'} />
           </button>
         )}
       </div>

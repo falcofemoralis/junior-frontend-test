@@ -55,7 +55,7 @@ class CategoryPage extends React.Component<CategoryPageProps, CategoryPageState>
             <h2 className='category__title'>{currentCategory}</h2>
             <ul className='category__products'>
               {products.map(product => (
-                <li key={product.id} className='category__products__item'>
+                <li key={product.id} className='category__product'>
                   <ProductCard product={product} />
                 </li>
               ))}

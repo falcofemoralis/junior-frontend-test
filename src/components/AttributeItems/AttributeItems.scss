@@ -2,14 +2,26 @@
     display: flex;
     flex-flow: wrap;
 
+    &__text {
+        gap: 12px;
+
+        &-small {
+            gap: 4px;
+        }
+    }
+
+    &__swatch {
+        gap: 8px;
+    }
+
     &__item {
-        margin: 10px 10px 0 0;
+        margin: 8px 0;
+        cursor: pointer;
     }
 }
 
-
-$swatch-size: 36px;
-$swatch-size-small: 20px;
+$swatch-size: 32px;
+$swatch-size-small: 16px;
 
 .swatch {
     width: $swatch-size;
@@ -18,51 +30,77 @@ $swatch-size-small: 20px;
     justify-content: center;
     align-items: center;
 
-    &__item {
-        width: calc($swatch-size - 4px);
-        height: calc($swatch-size - 4px);
-    }
-
-    &__item-small {
-        width: calc($swatch-size-small - 4px);
-        height: calc($swatch-size-small - 4px);
-    }
-
-    &-selected {
-        border: 1px solid var(--main-green-color);
-    }
-
-
     &-small {
+        position: relative;
         width: calc($swatch-size-small);
         height: calc($swatch-size-small);
+
+        &:hover::after,
+        &-selected::after {
+            content: "";
+            width: calc($swatch-size-small + 4px);
+            height: calc($swatch-size-small + 4px);
+            border: 1px solid var(--main-green-color);
+            position: absolute;
+        }
+    }
+
+    &:hover::after,
+    &-selected::after {
+        content: "";
+        width: calc($swatch-size + 4px);
+        height: calc($swatch-size + 4px);
+        border: 1px solid var(--main-green-color);
+        position: absolute;
+    }
+
+    &__border {
+        border: 1px solid #000;
     }
 }
 
 .text {
     min-width: 63px;
     height: 45px;
-    border: 1px solid #1D1F22;
+    border: 1px solid var(--main-black-color);
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Source Sans Pro';
     font-weight: 400;
     font-size: 16px;
+    line-height: 18px;
+    letter-spacing: 0.05em;
     display: flex;
     align-items: center;
     text-align: center;
-    letter-spacing: 0.05em;
-    color: #1D1F22;
-
-    &-selected {
-        background: #1D1F22;
-        border: 1px solid #1D1F22;
-        color: #fff
-    }
+    background: #fff;
+    transition: all .3s;
 
     &-small {
         min-width: 24px;
         height: 24px;
+        font-weight: 400;
+        font-size: 14px;
+        padding: 7px 4px;
+
+        &:hover,
+        &-selected {
+            background: var(--main-black-color);
+            border: 1px solid var(--main-black-color);
+            color: #fff;
+        }
     }
+
+    &:hover,
+    &-selected {
+        background: var(--main-black-color);
+        border: 1px solid var(--main-black-color);
+        color: #fff;
+    }
+}
+
+.noSelect {
+    pointer-events: none;
+    cursor: unset;
 }

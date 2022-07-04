@@ -86,23 +86,21 @@ class Header extends React.Component<HeaderProps, HeaderState> {
           <div className='header__buttons'>
             {currency && (
               <div className='currencies'>
-                <button className='currencies__button' onClick={this.toggleCurrencies} ref={this.currenciesBtnRef}>
+                <button className='currencies__button' onClick={this.toggleCurrencies} ref={this.currenciesBtnRef} disabled={cartOpen}>
                   <span className='currencies__symbol'>{currency.symbol}</span>
                   <img className='currencies__arrow' src={currenciesOpen ? UpArrowIcon : DownArrowIcon} />
                 </button>
                 <CurrenciesModal open={currenciesOpen} onClose={this.toggleCurrencies} currenciesBtnRef={this.currenciesBtnRef} />
               </div>
             )}
-            <div className='cart'>
-              <button className='cart__button' onClick={this.toggleCart}>
-                {productsAmount > 0 && (
-                  <div className='cart__count'>
-                    <span className='cart__count-text'>{productsAmount}</span>
-                  </div>
-                )}
-                <img className='cart__logo' src={CartIcon} alt='Cart Logo' />
-              </button>
-            </div>
+            <button className='cart__button' onClick={this.toggleCart}>
+              {productsAmount > 0 && (
+                <div className='cart__count'>
+                  <span className='cart__count-text'>{productsAmount}</span>
+                </div>
+              )}
+              <img className='cart__logo' src={CartIcon} alt='Cart Logo' />
+            </button>
             <CartModal open={cartOpen} />
           </div>
         </div>
