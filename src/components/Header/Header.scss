@@ -56,15 +56,6 @@
     justify-content: center;
     align-items: center;
   }
-
-  &__mask {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    height: calc(100vh - var(--header-height));
-    width: 100vw;
-    background: rgba(57, 55, 72, 0.22);
-  }
 }
 
 .cart {

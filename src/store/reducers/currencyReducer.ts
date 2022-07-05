@@ -3,6 +3,17 @@ import { RootState } from '../../store';
 import { Currency } from './../../types/product.type';
 
 const CURRENCY_STORAGE_KEY = 'currency';
+
+const getLocalCurrency = () => {
+  const data = localStorage.getItem(CURRENCY_STORAGE_KEY);
+  if (!data) return null;
+  return JSON.parse(data) as Currency;
+};
+
+const updateLocalCurrency = (currency: Currency) => {
+  localStorage.setItem(CURRENCY_STORAGE_KEY, JSON.stringify(currency));
+};
+
 export interface CurrencyState {
   currencies: Currency[];
   currentCurrency: Currency | null;
@@ -10,7 +21,7 @@ export interface CurrencyState {
 
 const initialState: CurrencyState = {
   currencies: [],
-  currentCurrency: null
+  currentCurrency: getLocalCurrency()
 };
 
 export const currencySlice = createSlice({
@@ -20,18 +31,14 @@ export const currencySlice = createSlice({
     initCurrencies: (state, action: PayloadAction<Currency[]>) => {
       state.currencies = action.payload;
 
-      const data = localStorage.getItem(CURRENCY_STORAGE_KEY);
-      if (data) {
-        const localCurrencyLabel: string = JSON.parse(data);
-        const found = action.payload.find(c => c.label == localCurrencyLabel);
-        state.currentCurrency = found ?? action.payload[0];
-      } else {
+      if (!state.currentCurrency) {
         state.currentCurrency = action.payload[0];
+        updateLocalCurrency(action.payload[0]);
       }
     },
     changeCurrency: (state, action: PayloadAction<Currency>) => {
       state.currentCurrency = action.payload;
-      localStorage.setItem(CURRENCY_STORAGE_KEY, JSON.stringify(action.payload.label));
+      updateLocalCurrency(action.payload);
     }
   }
 });

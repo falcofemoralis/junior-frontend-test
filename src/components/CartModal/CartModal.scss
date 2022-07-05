@@ -8,6 +8,14 @@ $cart-height: 70vh;
     background: #fff;
     overflow-y: hidden;
     z-index: 15;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+
+    &-visible {
+        opacity: 1 !important;
+        pointer-events: all !important;
+    }
 
     &__inner {
         display: flex;
@@ -111,4 +119,16 @@ $cart-height: 70vh;
             opacity: 0.5;
         }
     }
+
+    &__mask {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        height: calc(100vh - var(--header-height));
+        width: 100vw;
+        background: rgba(57, 55, 72, 0.22);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+      }
 }

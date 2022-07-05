@@ -7,7 +7,7 @@ import UpArrowIcon from '../../assets/up_arrow.svg';
 import { RootState } from '../../store';
 import { selectProductsCount } from '../../store/reducers/cartReducer';
 import { selectCategories } from '../../store/reducers/categoryReducer';
-import { selectCurrency } from '../../store/reducers/currencyReducer';
+import { selectCurrency, selectCurrencies } from '../../store/reducers/currencyReducer';
 import CartModal from '../CartModal/CartModal';
 import CurrenciesModal from '../CurrenciesModal/CurrenciesModal';
 import LoadingLayout from '../LoadingLayout/LoadingLayout';
@@ -49,7 +49,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
   render() {
     const { cartOpen, currenciesOpen } = this.state;
-    const { categories, productsAmount, currency } = this.props;
+    const { categories, productsAmount, currency, currencies } = this.props;
     const currentCategory = this.props.match.params.category;
 
     if (!categories) {
@@ -74,7 +74,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
           )}
           <img className='header__logo' src={LogoIcon} alt='Logo' />
           <div className='header__buttons'>
-            {currency && (
+            {currencies && currency && (
               <div className='currencies'>
                 <button className='currencies__button' onClick={this.toggleCurrencies} ref={this.currenciesBtnRef} disabled={cartOpen}>
                   <span className='currencies__symbol'>{currency.symbol}</span>
@@ -94,7 +94,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
             <CartModal open={cartOpen} />
           </div>
         </div>
-        {cartOpen && <div className='header__mask'></div>}
       </header>
     );
   }
@@ -103,7 +102,8 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 const mapStateToProps = (state: RootState) => ({
   categories: selectCategories(state),
   productsAmount: selectProductsCount(state),
-  currency: selectCurrency(state)
+  currency: selectCurrency(state),
+  currencies: selectCurrencies(state)
 });
 const mapDispatchToProps = () => ({});
 
