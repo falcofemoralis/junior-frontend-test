@@ -1,8 +1,8 @@
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { client } from '..';
 import Category from '../../types/category.type';
-import { GET_CATEGORIES, GET_CATEGORY } from './category.query';
 import { Product } from '../../types/product.type';
+import { GET_CATEGORIES, GET_CATEGORY } from './category.query';
 
 class CategoryService {
   apolloClient: ApolloClient<NormalizedCacheObject>;
@@ -21,7 +21,6 @@ class CategoryService {
       query: GET_CATEGORY,
       variables: { input: { title } }
     });
-
     return res.data.category.products;
   }
 }

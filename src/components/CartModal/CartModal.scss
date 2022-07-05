@@ -1,13 +1,10 @@
 $cart-height: 70vh;
-$cart-panel-height: 126px;
 
 .cartModal {
     position: absolute;
     top: var(--header-height);
     right: 0;
     width: 325px;
-    max-height: $cart-height;
-    padding: 16px;
     background: #fff;
     overflow-y: hidden;
     z-index: 15;
@@ -15,9 +12,8 @@ $cart-panel-height: 126px;
     &__inner {
         display: flex;
         flex-direction: column;
-        max-height: $cart-height;
-        padding-bottom: calc($cart-panel-height + 20px);
-        margin-top: 16px;
+        max-height: 50vh;
+        padding: 32px 16px 16px 16px;
         overflow-y: auto;
 
         &::-webkit-scrollbar {
@@ -29,15 +25,12 @@ $cart-panel-height: 126px;
             background-color: #eee;
             border-radius: 4px;
         }
-
-        &-empty {
-            min-height: 15vh;
-            padding: unset;
-        }
     }
 
     &__item {
         margin: 20px 0;
+        display: flex;
+        align-items: stretch;
     }
 
     &__title {
@@ -55,13 +48,9 @@ $cart-panel-height: 126px;
     }
 
     &__panel {
-        position: absolute;
-        bottom: 0;
-        left: 0;
         width: 100%;
         background: #fff;
-        padding-left: inherit;
-        padding-right: inherit;
+        padding: 16px;
     }
 
     &__row {

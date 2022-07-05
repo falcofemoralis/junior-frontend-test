@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
@@ -51,11 +52,11 @@ class CurrenciesModal extends React.Component<CurrenciesModalProps> {
     const { open, currencies, currency } = this.props;
 
     return (
-      <div className={`currenciesModal ${open ? 'currenciesModal-active' : ''}`} ref={this.wrapperRef}>
+      <div className={classNames('currenciesModal', { 'currenciesModal-active': open })} ref={this.wrapperRef}>
         <div className='currenciesModal__container'>
           {currencies.map(c => (
             <button
-              className={`currenciesModal__item ${c.label == currency?.label ? 'currenciesModal__item-selected' : ''}`}
+              className={classNames('currenciesModal__item', { 'currenciesModal__item-selected': c.label == currency?.label })}
               key={c.label}
               onClick={() => this.onCurrencySelect(c)}
             >

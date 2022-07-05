@@ -1,9 +1,11 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import cartReducer from './reducers/cartReducer';
+import categoryReducer from './reducers/categoryReducer';
 import currencyReducer from './reducers/currencyReducer';
 
 export const store = configureStore({
   reducer: {
+    category: categoryReducer,
     cart: cartReducer,
     currency: currencyReducer
   }

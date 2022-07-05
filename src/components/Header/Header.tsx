@@ -1,21 +1,21 @@
+import classNames from 'classnames';
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import DownArrowIcon from '../../assets/down_arrow.svg';
 import UpArrowIcon from '../../assets/up_arrow.svg';
-import categoryService from '../../services/CategoryService/category.service';
 import { RootState } from '../../store';
 import { selectProductsCount } from '../../store/reducers/cartReducer';
+import { selectCategories } from '../../store/reducers/categoryReducer';
 import { selectCurrency } from '../../store/reducers/currencyReducer';
-import Category from '../../types/category.type';
 import CartModal from '../CartModal/CartModal';
 import CurrenciesModal from '../CurrenciesModal/CurrenciesModal';
+import LoadingLayout from '../LoadingLayout/LoadingLayout';
 import CartIcon from './../../assets/cart.svg';
 import LogoIcon from './../../assets/logo.svg';
 import './Header.scss';
 
 interface HeaderState {
-  categories: Category[];
   cartOpen: boolean;
   currenciesOpen: boolean;
 }
@@ -30,22 +30,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   constructor(props: HeaderProps) {
     super(props);
 
-    this.state = { categories: [], cartOpen: false, currenciesOpen: false };
+    this.state = { cartOpen: false, currenciesOpen: false };
     this.toggleCart = this.toggleCart.bind(this);
     this.toggleCurrencies = this.toggleCurrencies.bind(this);
-  }
-
-  componentDidMount() {
-    this.initCategories();
-  }
-
-  async initCategories() {
-    const categories = await categoryService.getCategories();
-    this.setState({ categories });
-
-    if (!this.props.match.params.category && this.props.location.pathname == '/') {
-      this.props.history.push(`./${categories[0].name}`);
-    }
   }
 
   toggleCart() {
@@ -56,32 +43,35 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
   toggleCurrencies() {
     this.setState(({ currenciesOpen }) => {
-      console.log('toggle to ' + !currenciesOpen);
-
       return { currenciesOpen: !currenciesOpen };
     });
   }
 
   render() {
-    const { categories, cartOpen, currenciesOpen } = this.state;
-    const { productsAmount, currency } = this.props;
+    const { cartOpen, currenciesOpen } = this.state;
+    const { categories, productsAmount, currency } = this.props;
     const currentCategory = this.props.match.params.category;
+
+    if (!categories) {
+      return <LoadingLayout cover />;
+    }
 
     return (
       <header className='header'>
         <div className='header__inner'>
-          <nav className='header__navigation'>
-            {categories.length > 0 &&
-              categories.map(category => (
+          {categories.length > 0 && (
+            <nav className='header__navigation'>
+              {categories.map(category => (
                 <Link
-                  to={`/${category.name}`}
-                  className={`header__link ${currentCategory === category.name ? 'header__link-selected' : ''}`}
                   key={category.name}
+                  to={`/${category.name}`}
+                  className={classNames('header__link', { 'header__link-selected': currentCategory === category.name })}
                 >
                   {category.name}
                 </Link>
               ))}
-          </nav>
+            </nav>
+          )}
           <img className='header__logo' src={LogoIcon} alt='Logo' />
           <div className='header__buttons'>
             {currency && (
@@ -99,7 +89,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                   <span className='cart__count-text'>{productsAmount}</span>
                 </div>
               )}
-              <img className='cart__logo' src={CartIcon} alt='Cart Logo' />
+              <img src={CartIcon} alt='Cart Icon' />
             </button>
             <CartModal open={cartOpen} />
           </div>
@@ -111,6 +101,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 }
 
 const mapStateToProps = (state: RootState) => ({
+  categories: selectCategories(state),
   productsAmount: selectProductsCount(state),
   currency: selectCurrency(state)
 });

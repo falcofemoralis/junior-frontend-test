@@ -55,11 +55,17 @@ $selected-image-height: 513px;
         color: #fff;
         border: none;
         cursor: pointer;
-    }
+        opacity: 1;
+        transition: opacity .3s;
 
-    &__add:disabled {
-        opacity: 0.5;
-        cursor: unset;
+        &:disabled {
+            opacity: 0.5;
+            cursor: unset;
+        }
+
+        &:hover {
+            opacity: 0.5;
+        }
     }
 
     &__hint {
@@ -98,7 +104,7 @@ $selected-image-height: 513px;
     width: 60%;
 
     &__list {
-        width: 100% - $selected-image-width - 5%;
+        width: 100% - $selected-image-width;
         list-style: none;
         max-height: $selected-image-height;
         overflow-y: auto;

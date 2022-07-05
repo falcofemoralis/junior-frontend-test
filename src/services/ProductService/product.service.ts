@@ -1,7 +1,7 @@
-import { GET_PRODUCT, GET_CURRENCIES } from './product.query';
-import { Currency, Product } from './../../types/product.type';
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { client } from '..';
+import { Currency, Product } from './../../types/product.type';
+import { GET_CURRENCIES, GET_PRODUCT } from './product.query';
 
 class ProductService {
   apolloClient: ApolloClient<NormalizedCacheObject>;

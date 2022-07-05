@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { Attribute, AttributeItem, AttributeType } from '../../types/product.type';
 import './AttributeItems.scss';
@@ -42,12 +43,14 @@ export default class AttributeItems extends React.Component<AttributeItemsProps,
     const type = attribute.type;
 
     return (
-      <div className={`attributes attributes__${type} ${small ? `attributes__${type}-small` : ''}`}>
+      <div className={classNames('attributes', `attributes__${type}`, { [`attributes__${type}-small`]: small })}>
         {attribute.items.map(item => (
           <div
-            className={`attributes__item ${type} ${small ? `${type}-small` : ''} ${
-              this.isItemSelected(item) ? `${type}-${small ? 'small-' : ''}selected` : ''
-            } ${!selectable ? 'noSelect' : ''} ${item.id == 'White' ? 'swatch__border' : ''}`}
+            className={classNames('attributes__item', `${type}Attr`, small ? `${type}Attr__item-small` : `${type}Attr__item`, {
+              noSelect: !selectable,
+              swatchAttr__border: item.id == 'White',
+              [`${type}Attr__item${small ? '-small' : ''}-selected`]: this.isItemSelected(item)
+            })}
             key={item.id}
             onClick={() => this.onSelect(item)}
             style={{ background: type == AttributeType.swatch ? item.value : 'auto' }}

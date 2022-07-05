@@ -14,6 +14,10 @@ class CartPage extends React.Component<PropsFromRedux> {
     return (totalPrice * 100) / 79 - totalPrice;
   }
 
+  handleOrderPress() {
+    alert('Your order is ready!');
+  }
+
   render() {
     const { cartItems, productsAmount, totalPrice, currency } = this.props;
     return (
@@ -21,33 +25,38 @@ class CartPage extends React.Component<PropsFromRedux> {
         <div className='cartPage'>
           <span className='cartPage__title'>Cart</span>
           <div className='cartPage__divider'></div>
+          {cartItems.length == 0 && <span className='cartItem__name'>Your cart is empty!</span>}
           {cartItems.map(item => (
             <div key={getProductKey(item)}>
               <CartItem cartItem={item} gallery />
               <div className='cartPage__divider'></div>
             </div>
           ))}
-          <div className='cartPage__panel'>
-            <div className='cartPage__row'>
-              <span className='cartPage__name'>Tax 21%:</span>
-              <span className='cartPage__amount'>
-                {currency?.symbol}
-                {this.getTax(totalPrice).toFixed(2)}
-              </span>
+          {cartItems.length > 0 && (
+            <div className='cartPage__panel'>
+              <div className='cartPage__row'>
+                <span className='cartPage__name'>Tax 21%:</span>
+                <span className='cartPage__amount'>
+                  {currency?.symbol}
+                  {this.getTax(totalPrice).toFixed(2)}
+                </span>
+              </div>
+              <div className='cartPage__row'>
+                <span className='cartPage__name'>Quantity:</span>
+                <span className='cartPage__amount'>{productsAmount}</span>
+              </div>
+              <div className='cartPage__row'>
+                <span className='cartPage__name'>Total:</span>
+                <span className='cartPage__amount'>
+                  {currency?.symbol}
+                  {totalPrice.toFixed(2)}
+                </span>
+              </div>
+              <button className='cartPage__order' onClick={this.handleOrderPress}>
+                Order
+              </button>
             </div>
-            <div className='cartPage__row'>
-              <span className='cartPage__name'>Quantity:</span>
-              <span className='cartPage__amount'>{productsAmount}</span>
-            </div>
-            <div className='cartPage__row'>
-              <span className='cartPage__name'>Total:</span>
-              <span className='cartPage__amount'>
-                {currency?.symbol}
-                {totalPrice.toFixed(2)}
-              </span>
-            </div>
-            <button className='cartPage__order'>Order</button>
-          </div>
+          )}
         </div>
       </BasicLayout>
     );

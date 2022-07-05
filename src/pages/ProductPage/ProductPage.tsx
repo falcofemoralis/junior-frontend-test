@@ -1,17 +1,18 @@
-import DOMPurify from 'dompurify';
+import { Interweave } from 'interweave';
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import AttributeItems from '../../components/AttributeItems/AttributeItems';
 import { BasicLayout } from '../../components/BasicLayout/BasicLayout';
+import LoadingLayout from '../../components/LoadingLayout/LoadingLayout';
 import productService from '../../services/ProductService/product.service';
 import { AppDispatch, RootState } from '../../store';
 import { addToCart } from '../../store/reducers/cartReducer';
+import { selectCurrency } from '../../store/reducers/currencyReducer';
 import { CartItem, SelectedAttribute } from '../../types/cartItem.type';
 import { Product } from '../../types/product.type';
-import { selectCurrency } from '../../store/reducers/currencyReducer';
-import './ProductPage.scss';
 import { getPriceString } from '../../utils/getPrice';
+import './ProductPage.scss';
 
 interface RouteParams {
   id: string;
@@ -96,7 +97,11 @@ class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
     const { product, error } = this.state;
 
     if (!product) {
-      return <div>Loading</div>;
+      return (
+        <BasicLayout>
+          <LoadingLayout />
+        </BasicLayout>
+      );
     }
 
     return (
@@ -129,7 +134,7 @@ class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
               Add To Cart
             </button>
             {error && <span className='product__hint'>{error}</span>}
-            <span className='product__description' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }}></span>
+            <Interweave className='product__description' content={product.description} />
           </div>
         </div>
       </BasicLayout>

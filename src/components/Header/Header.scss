@@ -25,13 +25,13 @@
     line-height: 120%;
     font-size: 16px;
     text-transform: uppercase;
+    text-decoration: none;
 
     &:hover,
     &-selected {
       position: relative;
       font-weight: 600;
       color: var(--main-green-color);
-      text-decoration: none;
     }
 
     &:hover::after,
@@ -86,7 +86,7 @@
     height: 20px;
     border-radius: 60px;
     background: var(--main-black-color);
-    bottom: 7px;
+    bottom: 13px;
     right: -13px;
     display: flex;
     justify-content: center;

@@ -11,8 +11,9 @@
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@reduxjs/toolkit": "^1.8.3",
-    "dompurify": "^2.3.8",
     "graphql": "^16.5.0",
+    "interweave": "^13.0.0",
+    "classnames": "^2.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^8.0.2",
@@ -20,7 +21,6 @@
     "react-scripts": "5.0.1"
   },
   "devDependencies": {
-    "@types/dompurify": "^2.3.3",
     "@types/node": "^16.11.42",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
