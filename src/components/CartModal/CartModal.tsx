@@ -17,43 +17,57 @@ class CartModal extends React.Component<CartModalProps> {
     alert('Your order is ready!');
   }
 
+  renderTitle() {
+    const { cartItems } = this.props;
+
+    return (
+      <div className='cartModal__title'>
+        <span className='cartModal__title-name'>My Bag</span>
+        {cartItems.length > 0 && <span className='cartModal__title-count  '>, {cartItems.length} items</span>}
+      </div>
+    );
+  }
+
+  renderPanel() {
+    const { cartItems, currency, totalPrice } = this.props;
+
+    return (
+      cartItems.length > 0 && (
+        <div className='cartModal__panel'>
+          <div className='cartModal__row'>
+            <span className='cartModal__total'>Total</span>
+            <span className='cartModal__price'>
+              {currency?.symbol}
+              {totalPrice.toFixed(2)}
+            </span>
+          </div>
+          <div className='cartModal__row'>
+            <Link className='cartModal__bag' to='/cart'>
+              View Bag
+            </Link>
+            <button className='cartModal__check' onClick={this.handleOrderPress}>
+              Check Out
+            </button>
+          </div>
+        </div>
+      )
+    );
+  }
+
   render() {
-    const { open, cartItems, currency, totalPrice } = this.props;
+    const { open, cartItems } = this.props;
 
     return (
       <div>
         <div className={classNames('cartModal', { 'cartModal-visible': open })}>
           <div className={classNames('cartModal__inner')}>
-            <div className='cartModal__title'>
-              <span className='cartModal__title-name'>My Bag</span>
-              {cartItems.length > 0 && <span className='cartModal__title-count  '>, {cartItems.length} items</span>}
-            </div>
-            {cartItems.length == 0 && <span className='cartModal__title-count'>Your cart is empty!</span>}
+            {cartItems.length > 0 ? this.renderTitle() : <span className='cartModal__title-count'>Your cart is empty!</span>}
             {cartItems.map(cartItem => (
               <CartItem className='cartModal__item' key={getProductKey(cartItem)} cartItem={cartItem} small></CartItem>
             ))}
           </div>
-          {cartItems.length > 0 && (
-            <div className='cartModal__panel'>
-              <div className='cartModal__row'>
-                <span className='cartModal__total'>Total</span>
-                <span className='cartModal__price'>
-                  {currency?.symbol}
-                  {totalPrice.toFixed(2)}
-                </span>
-              </div>
-              <div className='cartModal__row'>
-                <Link className='cartModal__bag' to='/cart'>
-                  View Bag
-                </Link>
-                <button className='cartModal__check' onClick={this.handleOrderPress}>
-                  Check Out
-                </button>
-              </div>
-            </div>
-          )}
+          {this.renderPanel()}
         </div>
-        <div className={classNames('cartModal__mask', { 'cartModal-visible': open })}></div>
       </div>
     );
   }

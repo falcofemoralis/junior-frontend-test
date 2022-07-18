@@ -9,50 +9,21 @@ import './CurrenciesModal.scss';
 interface CurrenciesModalProps extends PropsFromRedux {
   open: boolean;
   onClose: () => void;
-  currenciesBtnRef: React.RefObject<HTMLButtonElement>;
 }
 
 class CurrenciesModal extends React.Component<CurrenciesModalProps> {
-  wrapperRef = React.createRef<HTMLDivElement>();
-
-  constructor(props: CurrenciesModalProps) {
-    super(props);
-
-    this.handleClickOutside = this.handleClickOutside.bind(this);
-  }
-
-  handleClickOutside(event: MouseEvent) {
-    if (!this.wrapperRef.current) {
-      return;
-    }
-
-    if (!this.props.open) {
-      return;
-    }
-
-    if (!this.wrapperRef.current.contains(event.target as Node) && !this.props.currenciesBtnRef.current?.contains(event.target as Node)) {
-      this.props.onClose();
-    }
-  }
-
-  componentDidMount() {
-    document.addEventListener('mouseup', this.handleClickOutside);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('mouseup', this.handleClickOutside);
-  }
-
   onCurrencySelect(currency: Currency) {
-    this.props.changeCurrency(currency);
-    this.props.onClose();
+    const { changeCurrency, onClose } = this.props;
+
+    changeCurrency(currency);
+    onClose();
   }
 
   render() {
     const { open, currencies, currency } = this.props;
 
     return (
-      <div className={classNames('currenciesModal', { 'currenciesModal-active': open })} ref={this.wrapperRef}>
+      <div className={classNames('currenciesModal', { 'currenciesModal-active': open })}>
         <div className='currenciesModal__container'>
           {currencies.map(c => (
             <button
