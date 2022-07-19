@@ -8,9 +8,6 @@ interface CartItemAttrs {
   quantity: number;
   selectedAttributes: SelectedAttribute[];
 }
-export interface LocalCartItem extends CartItemAttrs {
-  productId: string;
-}
 
 export interface CartItem extends CartItemAttrs {
   product: Product;

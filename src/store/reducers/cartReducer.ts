@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
-import { LocalCartItem } from '../../types/cartItem.type';
 import { CartItem } from './../../types/cartItem.type';
 import { getPrice } from '../../utils/getPrice';
 
-const CART_STORAGE_KEY = 'cart';
+const CART_STORAGE_KEY = 'cart_products';
 export interface CartState {
   products: CartItem[];
 }
@@ -24,17 +23,10 @@ const compareProducts = (cartItem: CartItem, selectedCartItem: CartItem) => {
 };
 
 export const updateLocalCart = (products: CartItem[]) => {
-  localStorage.setItem(
-    CART_STORAGE_KEY,
-    JSON.stringify(
-      products.map(p => {
-        return { productId: p.product.id, quantity: p.quantity, selectedAttributes: p.selectedAttributes };
-      })
-    )
-  );
+  localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(products));
 };
 
-export const getLocalCart = (): LocalCartItem[] => {
+export const getLocalCart = (): CartItem[] => {
   const data = localStorage.getItem(CART_STORAGE_KEY);
   if (data) {
     return JSON.parse(data);
@@ -47,8 +39,9 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    initCart: (state, action: PayloadAction<CartItem[]>) => {
-      state.products.unshift(...action.payload);
+    initCart: state => {
+      const cartItems = getLocalCart();
+      state.products.unshift(...cartItems);
     },
     addToCart: (state, action: PayloadAction<CartItem>) => {
       const found = state.products.find(p => compareProducts(p, action.payload));

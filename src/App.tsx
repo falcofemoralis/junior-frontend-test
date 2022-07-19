@@ -1,20 +1,19 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { Route, Switch, withRouter, RouteComponentProps } from 'react-router-dom';
-import CategoryPage from './pages/CategoryPage/CategoryPage';
-import ProductPage from './pages/ProductPage/ProductPage';
-import { AppDispatch } from './store';
-import { initCart, getLocalCart } from './store/reducers/cartReducer';
-import './styles/App.scss';
-import { CartItem as CartItemType } from './types/cartItem.type';
-import productService from './services/ProductService/product.service';
-import { Currency } from './types/product.type';
-import { initCurrencies } from './store/reducers/currencyReducer';
+import { Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom';
 import CartPage from './pages/CartPage/CartPage';
-import categoryService from './services/CategoryService/category.service';
-import Category from './types/category.type';
-import { initCategories } from './store/reducers/categoryReducer';
+import CategoryPage from './pages/CategoryPage/CategoryPage';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
+import ProductPage from './pages/ProductPage/ProductPage';
+import categoryService from './services/CategoryService/category.service';
+import productService from './services/ProductService/product.service';
+import { AppDispatch } from './store';
+import { initCart } from './store/reducers/cartReducer';
+import { initCategories } from './store/reducers/categoryReducer';
+import { initCurrencies } from './store/reducers/currencyReducer';
+import './styles/App.scss';
+import Category from './types/category.type';
+import { Currency } from './types/product.type';
 
 interface RouteParams {
   category: string;
@@ -41,18 +40,7 @@ class App extends React.Component<PropsFromRedux & RouteComponentProps<RoutePara
   }
 
   async initCart() {
-    const localCartItems = getLocalCart();
-
-    if (localCartItems) {
-      const items: CartItemType[] = [];
-
-      for (const item of localCartItems) {
-        const product = await productService.getProduct(item.productId);
-        items.push({ product, quantity: item.quantity, selectedAttributes: item.selectedAttributes });
-      }
-
-      this.props.initCart(items);
-    }
+    this.props.initCart();
   }
 
   render() {
@@ -83,7 +71,7 @@ const mapStateToProps = () => ({});
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
   initCategories: (categories: Category[]) => dispatch(initCategories(categories)),
   initCurrencies: (currencies: Currency[]) => dispatch(initCurrencies(currencies)),
-  initCart: (items: CartItemType[]) => dispatch(initCart(items))
+  initCart: () => dispatch(initCart())
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
