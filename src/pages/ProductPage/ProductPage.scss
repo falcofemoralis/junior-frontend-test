@@ -1,7 +1,3 @@
-$selected-image-width: 85%;
-$selected-image-height: 513px;
-
-
 .productPage {
     display: flex;
     justify-content: space-between;
@@ -76,8 +72,6 @@ $selected-image-height: 513px;
 
     &__description {
         margin-top: 20px;
-        max-height: 150px;
-        overflow: auto;
     }
 
     &__description,
@@ -85,15 +79,14 @@ $selected-image-height: 513px;
         font-family: 'Roboto';
         font-weight: 400;
         font-size: 16px;
-        overflow: auto;
+    }
+
+    &__description :is(h1, h2, h3, h4, h5, h6) {
+        font-weight: revert;
     }
 
     &__description ul {
-        list-style: none;
-    }
-
-    &__description li {
-        padding: 5px 0 5px 0;
+        list-style-position: inside;
     }
 }
 
@@ -101,14 +94,10 @@ $selected-image-height: 513px;
     display: flex;
     margin-right: 25px;
     align-items: flex-start;
-    width: 60%;
+    flex-grow: 1;
 
     &__list {
-        width: 100% - $selected-image-width;
         list-style: none;
-        max-height: $selected-image-height;
-        overflow-y: auto;
-        overflow-x: hidden;
         margin-right: 40px;
         display: flex;
         flex-direction: column;
@@ -130,9 +119,8 @@ $selected-image-height: 513px;
     }
 
     &__image-selected {
-        width: $selected-image-width;
+        max-width: 500px;
         object-fit: contain;
-        max-height: $selected-image-height;
     }
 }
 

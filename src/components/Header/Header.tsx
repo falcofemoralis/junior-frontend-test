@@ -72,7 +72,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   }
 
   renderCurrencies() {
-    const { cartOpen, currenciesOpen } = this.state;
+    const { currenciesOpen } = this.state;
     const { currency, currencies } = this.props;
     const currenciesBtnRef = React.createRef<HTMLButtonElement>();
 
@@ -81,7 +81,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
     return (
       <div className='currencies'>
-        <button className='currencies__button' onClick={this.toggleCurrencies} ref={currenciesBtnRef} disabled={cartOpen}>
+        <button className='currencies__button' onClick={this.toggleCurrencies} ref={currenciesBtnRef}>
           <span className='currencies__symbol'>{currency.symbol}</span>
           <img className='currencies__arrow' src={currenciesOpen ? UpArrowIcon : DownArrowIcon} />
         </button>
