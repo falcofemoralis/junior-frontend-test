@@ -115,7 +115,9 @@ class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
                 </li>
               ))}
             </ul>
-            <img className='gallery__image-selected' src={product.gallery[this.state.currentImageIndex]} />
+            <div className='gallery__image-container'>
+              <img className='gallery__image-selected' src={product.gallery[this.state.currentImageIndex]} />
+            </div>
           </div>
           <div className='product'>
             <span className='product__brand'>{product.brand}</span>

@@ -1,3 +1,5 @@
+$product-panel-width: 292px;
+
 .productPage {
     display: flex;
     justify-content: space-between;
@@ -6,7 +8,7 @@
 .product {
     display: flex;
     flex-direction: column;
-    width: 292px;
+    width: $product-panel-width;
 
     &__brand {
         font-weight: 600;
@@ -86,22 +88,21 @@
     }
 
     &__description ul {
-        list-style-position: inside;
+        // list-style-position: inside;
     }
 }
 
 .gallery {
     display: flex;
-    margin-right: 25px;
+    padding-right: 25px;
     align-items: flex-start;
-    flex-grow: 1;
+    width: calc(100% - $product-panel-width);
 
     &__list {
         list-style: none;
         margin-right: 40px;
         display: flex;
         flex-direction: column;
-        padding-right: 10px;
     }
 
     &__item {
@@ -113,14 +114,19 @@
     &__image {
         width: 100%;
         height: 100%;
-        object-position: top right;
+        object-position: top;
         object-fit: cover;
         cursor: pointer;
     }
 
+    &__image-container {
+        display: flex;
+    }
+
     &__image-selected {
-        max-width: 500px;
+        width: 100%;
         object-fit: contain;
+        max-height: 70vh;
     }
 }
 
